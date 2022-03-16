@@ -1,5 +1,7 @@
-import * as THREE from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.module.js';
+import * as THREE from 'https://cdn.skypack.dev/three@0.132.2/build/three.module.js';
+import {VRButton} from 'https://cdn.skypack.dev/three@0.132.2/examples/jsm/webxr/VRButton.js'
 
+//Boilerplate Settings
 const canvas = document.querySelector('canvas.webgl')
 const scene = new THREE.Scene()
 const camera = new THREE.PerspectiveCamera(55, window.innerWidth/window.innerHeight, 0.001, 500);
@@ -9,12 +11,11 @@ const renderer = new THREE.WebGLRenderer({canvas: canvas, antialias: true})
 renderer.setSize(window.innerWidth, window.innerHeight)
 renderer.setPixelRatio(window.devicePixelRatio)
 
-
+//Creating the wireframe world
 const cubeGeometry = new THREE.BoxGeometry(500, 500, 110);
 const planeGeometry = new THREE.PlaneGeometry(500, 500, 25, 25);
 const planeMaterial = new THREE.MeshBasicMaterial({color:0x222222, side:THREE.DoubleSide});
 const planeMesh = new THREE.Mesh(planeGeometry, planeMaterial);
-
 const cubeGeo = new THREE.EdgesGeometry( cubeGeometry ); 
 const lineGeo = new THREE.WireframeGeometry( planeGeometry );
 const lineMat = new THREE.LineBasicMaterial( { color: 0xffffff } );
@@ -29,6 +30,9 @@ scene.add(planeMesh)
 
 scene.add(new THREE.AmbientLight(0xffffff))
 
+//VRStuff
+renderer.xr.enabled = true;
+document.body.appendChild(VRButton.createButton(renderer));
 
 var clock = new THREE.Clock();
 const tick = () => {
