@@ -22,32 +22,3 @@ html
     background: #000000;
     z-index: 2;
 }
-#scroller{
-    overflow: scroll;
-    z-index: 1;
-}
-#change-move{
-    position: fixed;
-    width: 100%;
-    text-align: center;
-    margin-top: 2vh;
-    top: 0;
-    z-index: 3;
-}
-#ctrl-btn{
-    margin-top: 2vh;
-}
-#desc-box{
-    position: fixed;
-    bottom: 0;
-    margin: 3% 10% 2% 3%;
-    padding: 1.5%;
-    width: 92%;
-    z-index: 3;
-    background-color: #AAAAAA;
-    border-radius: 15px;
-    text-align: center;
-    visibility: hidden;
-    -webkit-transition: opacity 100ms, visibility 100ms;
-    transition: opacity 100ms, visibility 100ms;
-}
