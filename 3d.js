@@ -35,8 +35,6 @@ renderer.xr.enabled = true;
 document.body.appendChild(VRButton.createButton(renderer));
 
 var clock = new THREE.Clock();
-const tick = () => {
-  renderer.render(scene, camera)
-  window.requestAnimationFrame(tick)
-}
-tick();
+renderer.setAnimationLoop(() => {
+	renderer.render(scene, camera)	
+})
