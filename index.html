@@ -14,9 +14,65 @@
         <div class="row">
             <div class="col-md-6 p-0">
                 <canvas class="webgl"></canvas>
+                <div id="settings-3d">
+                    <div class="row">
+                        <label class="col-sm-2 m-1" for="opacity-slider">Opacidad</label>
+                        <input class="col-sm-4" id="opacity-slider" type="range">
+                    </div>
+                        <button id="render-btn">Renderizar Modelo 3D</button>
+                </div>
             </div>
-            <div class="col-md-6">
-                <input id="opacity_slider" type="range">
+            <div class="col-md-6 params">
+                <h2>Parametros del Modelo</h2>
+                <hr/>
+                <h3>Vectores</h3>
+                <div class="row text-center">
+                    <div class="col-sm-4 tbl">
+                        <h4>Necesidades</h4>
+                        <div class="container-fluid p-0" id="nsc-cont"></div>
+                        <div id="sum-n" class="row"></div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <Button id="+n">+ Añadir</Button>
+                            </div>
+                            <div class="col-sm-6">
+                                <Button id="-n">- Quitar</Button>
+                            </div> 
+                        </div>
+                    </div>
+                    <div class="col-sm-4 tbl">
+                        <h4>Variedades</h4>
+                        <div class="container-fluid p-0" id="vrd-cont"></div>
+                        <div id="sum-v" class="row"></div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <Button id="+v">+ Añadir</Button>
+                            </div>
+                            <div class="col-sm-6">
+                                <Button id="-v">- Quitar</Button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 tbl">
+                        <h4>Canales</h4>
+                        <div class="container-fluid p-0" id="cnl-cont"></div>
+                        <div id="sum-c" class="row"></div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <Button id="+c">+ Añadir</Button>
+                            </div>
+                            <div class="col-sm-6">
+                                <Button id="-c">- Quitar</Button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <row>
+                        <button id="updt-btn">Actualizar Valores</button>
+                    </row>
+                    <br><hr>
+                </div>
+            </div>
             </div>
         </div>
     </div>
