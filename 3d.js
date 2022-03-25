@@ -13,7 +13,7 @@ window.addEventListener('resize', (e) => {
 	e.preventDefault();
 	camera.aspect = canvas.parentElement.clientWidth/canvas.parentElement.clientHeight;
     camera.updateProjectionMatrix();
-    renderer.setSize( canvas.parentElement.clientWidth, canvas.parentElement.clientHeight);
+    renderer.setSize( canvas.parentElement.clientWidth, canvas.clientHeight);
 }, false);
 
 const controls = new OrbitControls(camera, renderer.domElement);
@@ -85,7 +85,6 @@ makeSum(vard, vard_sum);
 function addList(list, container, buttons, letter){
 	var i = 0;
 	container.innerHTML = "";
-	console.log(buttons)
 	buttons.innerHTML = "";
 	for(const n of list){
 		container.innerHTML+=`<div class="row m-1">
@@ -104,7 +103,6 @@ function addList(list, container, buttons, letter){
 											var cFilter = parseInt(e.target.getAttribute('c'));
 											var nFilter = parseInt(e.target.getAttribute('n'));
 											var vFilter = parseInt(e.target.getAttribute('v'));
-											console.log(cFilter, nFilter, vFilter); 
 											renderNew([cFilter, nFilter, vFilter])});
 		buttons.appendChild(btn)
 		i++;
