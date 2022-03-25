@@ -85,6 +85,8 @@ makeSum(vard, vard_sum);
 function addList(list, container, buttons, letter){
 	var i = 0;
 	container.innerHTML = "";
+	console.log(buttons)
+	buttons.innerHTML = "";
 	for(const n of list){
 		container.innerHTML+=`<div class="row m-1">
 								<div class="col-sm-4 p-0">${letter + (i+1)}</div>
@@ -92,8 +94,20 @@ function addList(list, container, buttons, letter){
 									<input class="${letter}-inner-inpt" name="valor" type="number" min="1" max="100" step="1" placeholder="%" value="${n}">
 								</div>
 							</div>`;
+
+		var btn = document.createElement('button');
+		btn.innerHTML = letter + (i+1);
+		(letter == "C") ? btn.setAttribute("c",i) : btn.setAttribute("c",null);  
+		(letter == "N") ? btn.setAttribute("n",i) : btn.setAttribute("n",null);  
+		(letter == "V") ? btn.setAttribute("v",i) : btn.setAttribute("v",null);  
+		btn.addEventListener('click', (e)=>{e.preventDefault();
+											var cFilter = parseInt(e.target.getAttribute('c'));
+											var nFilter = parseInt(e.target.getAttribute('n'));
+											var vFilter = parseInt(e.target.getAttribute('v'));
+											console.log(cFilter, nFilter, vFilter); 
+											renderNew([cFilter, nFilter, vFilter])});
+		buttons.appendChild(btn)
 		i++;
-		buttons.innerHTML+=`<button>${letter+i}</button>`;
 	}
 }
 function makeSum(list, container){
@@ -114,9 +128,9 @@ function renderCubes(filter){
 			for (var n = 0; n<ncsd.length; n++) {
 				for (var c = 0; c<canl.length; c++) {
 					var cf, nf, vf;
-					(filter[0] == null) ? cf=c: cf=filter[0];
-					(filter[1] == null) ? nf=n: nf=filter[1];
-					(filter[2] == null) ? vf=v: vf=filter[2]; 
+					(isNaN(filter[0])) ? cf=c: cf=filter[0];
+					(isNaN(filter[1])) ? nf=n: nf=filter[1];
+					(isNaN(filter[2])) ? vf=v: vf=filter[2]; 
 					if(c == cf && n == nf && v==vf){
 						const cubeGeometry = new THREE.BoxGeometry(canl[c], ncsd[n], vard[v]);
 						const cubeMesh = new THREE.Mesh(cubeGeometry, cubeMat);
@@ -142,7 +156,7 @@ function renderCubes(filter){
 function sum(sum, a){
 	return sum + a;
 }
-renderCubes([null, null, null]);
+renderCubes([NaN, NaN, NaN]);
 
 const opacity_slider = document.getElementById("opacity-slider");
 const render_button = document.getElementById("render-btn");
@@ -154,37 +168,37 @@ const mns_n = document.getElementById("-n");
 const mns_c = document.getElementById("-c");
 const mns_v = document.getElementById("-v");
 
-render_button.addEventListener('click', () => {renderNew()})
+render_button.addEventListener('click', () => {renderNew([NaN, NaN, NaN])})
 opacity_slider.addEventListener('input', (e) => {cubeMat.opacity = e.target.value/100 })
 update_button.addEventListener('click', () => {getNewValues()})
 mas_n.addEventListener('click', (e) => {
 	ncsd.push(0); 
-	addList(ncsd, ncsd_list,"N"); 
+	addList(ncsd, ncsd_list, nscd_slc, "N"); 
 	makeSum(ncsd, ncsd_sum)
 })
 mas_c.addEventListener('click', (e) => {
 	canl.push(0); 
-	addList(canl, canl_list,"C")
+	addList(canl, canl_list, canl_slc, "C")
 	makeSum(canl, canl_sum);
 })
 mas_v.addEventListener('click', (e) => {
 	vard.push(0); 
-	addList(vard,vard_list,"V")
+	addList(vard,vard_list, vard_slc, "V")
 	makeSum(vard,vard_sum);
 })
 mns_n.addEventListener('click', (e) => {
 	ncsd.pop(); 
-	addList(ncsd,ncsd_list,"N")
+	addList(ncsd,ncsd_list, nscd_slc,"N")
 	makeSum(ncsd, ncsd_sum)
 })
 mns_c.addEventListener('click', (e) => {
 	canl.pop(); 
-	addList(canl,canl_list,"C")
+	addList(canl,canl_list, vard_slc, "C")
 	makeSum(canl, canl_sum);
 })
 mns_v.addEventListener('click', (e) => {
 	vard.pop(); 
-	addList(vard,vard_list,"V")
+	addList(vard,vard_list, vard_slc, "V")
 	makeSum(vard,vard_sum);
 })
 	
@@ -196,7 +210,7 @@ function getNewValues(){
 	makeSum(ncsd, ncsd_sum);
 	makeSum(canl, canl_sum);
 	makeSum(vard, vard_sum);
-	renderNew();
+	renderNew([NaN, NaN, NaN]);
 }
 function getValue(clas){
 	var htmls = document.getElementsByClassName(clas);
@@ -206,9 +220,9 @@ function getValue(clas){
 	}
 	return arr;
 }
-function renderNew(){
+function renderNew(filter){
 	scene.remove(cubes); 
-	renderCubes([null, null, null]);
+	renderCubes(filter);
 }
 
 
