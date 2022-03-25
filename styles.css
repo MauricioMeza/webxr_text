@@ -20,7 +20,24 @@ html
     background: #000000;
     z-index: 2;
 }
-
+.slices{
+    text-align: center;
+    width: 100%;
+    z-index: 5;
+    position: absolute;
+}
+#top-slices{
+    margin: auto;
+    top: 0;
+}
+#right-slices{
+    margin: auto;
+    top: 5vh;
+}
+#left-slices{
+    margin: auto;
+    bottom: 14vh;
+}
 #settings-3d{
     height: 10vh;
     position: relative;
@@ -29,7 +46,8 @@ html
     z-index: 5;
 }
 #opacity-slider{
-    width: 80%;  
+    width: 70%;
+    margin-left: 5%;  
 }
 #render-btn{
     width: 100%;

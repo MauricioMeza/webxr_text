@@ -9,6 +9,12 @@ scene.add(camera);
 const renderer = new THREE.WebGLRenderer({canvas: canvas, antialias: true})
 renderer.setSize(canvas.clientWidth, canvas.clientHeight)
 renderer.setPixelRatio(window.devicePixelRatio)
+window.addEventListener('resize', (e) => {
+	e.preventDefault();
+	camera.aspect = canvas.parentElement.clientWidth/canvas.parentElement.clientHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize( canvas.parentElement.clientWidth, canvas.parentElement.clientHeight);
+}, false);
 
 const controls = new OrbitControls(camera, renderer.domElement);
 camera.position.set(0, 200, 200);
@@ -56,33 +62,38 @@ var ncsd = [100]; //y
 var vard = [100]; //z
 */
 
-//Initial Input Values
+//Initial Input Values and Slice Buttons
 const ncsd_list = document.getElementById("nsc-cont");
 const vard_list = document.getElementById("vrd-cont");
 const canl_list = document.getElementById("cnl-cont");
+const canl_slc = document.getElementById("top-slices");
+const vard_slc = document.getElementById("right-slices");
+const nscd_slc = document.getElementById("left-slices");
+addList(ncsd, ncsd_list, nscd_slc, "N");
+addList(vard, vard_list, vard_slc,  "V");
+addList(canl, canl_list, canl_slc, "C");
+//Sums
 const ncsd_sum = document.getElementById("sum-n");
 const vard_sum = document.getElementById("sum-v");
 const canl_sum = document.getElementById("sum-c");
 
-addList(ncsd, ncsd_list, "N");
-addList(vard, vard_list,  "V");
-addList(canl, canl_list, "C");
+
+
 makeSum(ncsd, ncsd_sum);
 makeSum(canl, canl_sum);
 makeSum(vard, vard_sum);
-function addList(list, container, letter){
+function addList(list, container, buttons, letter){
 	var i = 0;
 	container.innerHTML = "";
-	var sum = 0;
 	for(const n of list){
-		sum += n;
 		container.innerHTML+=`<div class="row m-1">
 								<div class="col-sm-4 p-0">${letter + (i+1)}</div>
 								<div class="col-sm-8 p-0">
 									<input class="${letter}-inner-inpt" name="valor" type="number" min="1" max="100" step="1" placeholder="%" value="${n}">
 								</div>
-							</div>`	
+							</div>`;
 		i++;
+		buttons.innerHTML+=`<button>${letter+i}</button>`;
 	}
 }
 function makeSum(list, container){
@@ -91,10 +102,9 @@ function makeSum(list, container){
 }
 
 
-
 var cubes;
 //RenderCubes
-function renderCubes(){
+function renderCubes(filter){
 	var sumVard = vard.reduce(sum, 0);
 	var sumNcsd = ncsd.reduce(sum, 0);
 	var sumCanl = canl.reduce(sum, 0);
@@ -103,7 +113,11 @@ function renderCubes(){
 		for (var v = 0; v<vard.length; v++) {
 			for (var n = 0; n<ncsd.length; n++) {
 				for (var c = 0; c<canl.length; c++) {
-					if(v<21 && n<21 && c<21){
+					var cf, nf, vf;
+					(filter[0] == null) ? cf=c: cf=filter[0];
+					(filter[1] == null) ? nf=n: nf=filter[1];
+					(filter[2] == null) ? vf=v: vf=filter[2]; 
+					if(c == cf && n == nf && v==vf){
 						const cubeGeometry = new THREE.BoxGeometry(canl[c], ncsd[n], vard[v]);
 						const cubeMesh = new THREE.Mesh(cubeGeometry, cubeMat);
 						const pos = new THREE.Vector3(0,0,0);
@@ -128,7 +142,7 @@ function renderCubes(){
 function sum(sum, a){
 	return sum + a;
 }
-renderCubes();
+renderCubes([null, null, null]);
 
 const opacity_slider = document.getElementById("opacity-slider");
 const render_button = document.getElementById("render-btn");
@@ -194,7 +208,7 @@ function getValue(clas){
 }
 function renderNew(){
 	scene.remove(cubes); 
-	renderCubes();
+	renderCubes([null, null, null]);
 }
 
 
