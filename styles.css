@@ -36,7 +36,15 @@ html
 }
 #left-slices{
     margin: auto;
-    bottom: 14vh;
+    top: 10vh;
+}
+#color{
+    margin: auto;
+    bottom: 15vh;
+    text-align: center;
+    width: 100%;
+    z-index: 5;
+    position: absolute;
 }
 #settings-3d{
     height: 10vh;

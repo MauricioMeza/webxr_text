@@ -23,14 +23,16 @@ const axesHelper = new THREE.AxesHelper( 5 );
 scene.add( axesHelper );
 
 
-//Creating the wireframe world
+//Creating the wireframe initial cUBE
 const cubeGeometry = new THREE.BoxGeometry(101, 101, 101);
 const cubeGeo = new THREE.EdgesGeometry( cubeGeometry ); 
 const lineMat = new THREE.LineBasicMaterial( { color:0x0000ff } );
 const lineMat2 = new THREE.LineBasicMaterial( { color:0xffffff } );
-const cubeMat = new THREE.MeshBasicMaterial( 
-	{color:0xaaaaaa, transparent:true, opacity:.5,  
-	polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1});
+const cubeMats = [	new THREE.MeshBasicMaterial({color:0xAAAAAA, transparent:true, opacity:.5, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1}),
+					new THREE.MeshBasicMaterial({color:0x70AD47, transparent:true, opacity:.5, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1}),
+					new THREE.MeshBasicMaterial({color:0x5B9BD5, transparent:true, opacity:.5, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1}),
+					new THREE.MeshBasicMaterial({color:0xFFC000, transparent:true, opacity:.5, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1}),
+					new THREE.MeshBasicMaterial({color:0xFF0000, transparent:true, opacity:.5, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1})]
 const cubeWire = new THREE.LineSegments( cubeGeo, lineMat);
 scene.add(cubeWire) 
 
@@ -62,23 +64,31 @@ var ncsd = [100]; //y
 var vard = [100]; //z
 */
 
-//Initial Input Values and Slice Buttons
+var colors = [];
+for(var i=0; i<=(canl.length*ncsd.length*vard.length); i++){
+	colors.push(Math.floor(Math.random()*5));
+}
+//------------------------------------
+//Inputs iniciales y botomos de slice
+//------------------------------------
 const ncsd_list = document.getElementById("nsc-cont");
 const vard_list = document.getElementById("vrd-cont");
 const canl_list = document.getElementById("cnl-cont");
 const canl_slc = document.getElementById("top-slices");
 const vard_slc = document.getElementById("right-slices");
 const nscd_slc = document.getElementById("left-slices");
+const color_slc = document.getElementById("color");
+//Add input lists and buttons for slices 
 addList(ncsd, ncsd_list, nscd_slc, "N");
 addList(vard, vard_list, vard_slc,  "V");
 addList(canl, canl_list, canl_slc, "C");
+addColorFilter();
 //Sums
 const ncsd_sum = document.getElementById("sum-n");
 const vard_sum = document.getElementById("sum-v");
 const canl_sum = document.getElementById("sum-c");
 
-
-
+//Por cada Necesidad, Canal, Variedad crear un input field
 makeSum(ncsd, ncsd_sum);
 makeSum(canl, canl_sum);
 makeSum(vard, vard_sum);
@@ -87,6 +97,7 @@ function addList(list, container, buttons, letter){
 	container.innerHTML = "";
 	buttons.innerHTML = "";
 	for(const n of list){
+		//Input field
 		container.innerHTML+=`<div class="row m-1">
 								<div class="col-sm-4 p-0">${letter + (i+1)}</div>
 								<div class="col-sm-8 p-0">
@@ -94,6 +105,7 @@ function addList(list, container, buttons, letter){
 								</div>
 							</div>`;
 
+		//Filter Button
 		var btn = document.createElement('button');
 		btn.innerHTML = letter + (i+1);
 		(letter == "C") ? btn.setAttribute("c",i) : btn.setAttribute("c",null);  
@@ -108,30 +120,46 @@ function addList(list, container, buttons, letter){
 		i++;
 	}
 }
+function addColorFilter(){
+	for(var i=0; i<=4; i++){
+		var btn = document.createElement('button');
+		btn.innerHTML = "(" +  i + ")";
+		btn.setAttribute("color", i);
+		btn.addEventListener('click', (e) =>{e.preventDefault();
+											var colorFilter = parseInt(e.target.getAttribute('color'));
+											console.log(colorFilter)
+											renderNew([NaN, NaN, NaN, colorFilter])
+											})
+		color_slc.appendChild(btn);
+	}
+}
 function makeSum(list, container){
 	const suma = list.reduce(sum, 0);
 	container.innerHTML=`<p>Total:${suma}</p>`
 }
 
-
+//--------------------------------------------------------
+//Render cubes a partir de la informacion en los arreglos.
+//--------------------------------------------------------
 var cubes;
-//RenderCubes
 function renderCubes(filter){
 	var sumVard = vard.reduce(sum, 0);
 	var sumNcsd = ncsd.reduce(sum, 0);
 	var sumCanl = canl.reduce(sum, 0);
+	var i=0;
 	if(sumVard == 100 && sumNcsd == 100 && sumCanl==100){
 		cubes = new THREE.Object3D();
 		for (var v = 0; v<vard.length; v++) {
 			for (var n = 0; n<ncsd.length; n++) {
 				for (var c = 0; c<canl.length; c++) {
-					var cf, nf, vf;
+					var cf, nf, vf, color;
 					(isNaN(filter[0])) ? cf=c: cf=filter[0];
 					(isNaN(filter[1])) ? nf=n: nf=filter[1];
 					(isNaN(filter[2])) ? vf=v: vf=filter[2]; 
-					if(c == cf && n == nf && v==vf){
+					(isNaN(filter[3])) ? color=colors[i]: color=filter[3]; 
+					if(c == cf && n == nf && v==vf && colors[i]==color){
 						const cubeGeometry = new THREE.BoxGeometry(canl[c], ncsd[n], vard[v]);
-						const cubeMesh = new THREE.Mesh(cubeGeometry, cubeMat);
+						const cubeMesh = new THREE.Mesh(cubeGeometry, cubeMats[colors[i]]);
 						const pos = new THREE.Vector3(0,0,0);
 						(c > 0) ? pos.x = canl[0]/2 + canl.slice(1, c).reduce(sum, 0) + canl[c]/2 : pos.x;
 						(n > 0) ? pos.y = ncsd[0]/2 + ncsd.slice(1, n).reduce(sum, 0) + ncsd[n]/2 : pos.y;
@@ -142,6 +170,7 @@ function renderCubes(filter){
 						const cubeWire = new THREE.LineSegments( cubeGeo, lineMat2);
 						cubeMesh.add(cubeWire);
 					}		
+					i++;
 				}
 			}	
 		}
@@ -154,8 +183,12 @@ function renderCubes(filter){
 function sum(sum, a){
 	return sum + a;
 }
-renderCubes([NaN, NaN, NaN]);
+renderCubes([NaN, NaN, NaN, NaN]);
 
+
+//-----------------------------------------------------
+//Botones de interaccion para nuevos inputs y opacidad
+//-----------------------------------------------------
 const opacity_slider = document.getElementById("opacity-slider");
 const render_button = document.getElementById("render-btn");
 const update_button = document.getElementById("updt-btn")
@@ -167,8 +200,12 @@ const mns_c = document.getElementById("-c");
 const mns_v = document.getElementById("-v");
 
 render_button.addEventListener('click', () => {renderNew([NaN, NaN, NaN])})
-opacity_slider.addEventListener('input', (e) => {cubeMat.opacity = e.target.value/100 })
 update_button.addEventListener('click', () => {getNewValues()})
+opacity_slider.addEventListener('input', (e) => {
+	for(var mat of cubeMats){
+		mat.opacity = e.target.value/100
+	}
+})
 mas_n.addEventListener('click', (e) => {
 	ncsd.push(0); 
 	addList(ncsd, ncsd_list, nscd_slc, "N"); 
