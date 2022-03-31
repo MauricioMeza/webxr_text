@@ -66,6 +66,8 @@ html
 /*----Params, Vectors and Companies----*/
 .params{
     text-align: center;
+    overflow-y: scroll;
+    max-height: 100vh;
 }
 .tbl{
     border: solid;
@@ -81,4 +83,24 @@ html
 #updt-btn{
     width: 90%;
     margin: 10px 0 10px 0;
+}
+.empresa-check{
+    width: 10%;
+    display: inline-block;
+}
+.empresa-label{
+    margin: 0;
+    padding: 0;
+    font-size: 80%;
+}
+.empresa-title{
+    display: flex;
+    align-items:center;
+    justify-content:center;
+}
+.empresa-container{
+    border-top: solid 1px;
+    -moz-border-bottom-colors: solid 1px;
+    padding: 0;
+    margin: 0;
 }

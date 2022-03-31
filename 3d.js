@@ -1,7 +1,9 @@
 import * as THREE from 'https://cdn.skypack.dev/three@0.132.2/build/three.module.js';
 import {OrbitControls} from 'https://cdn.skypack.dev/three@0.132.2/examples/jsm/controls/OrbitControls.js'
 
+/*---------------------
 //Boilerplate Settings
+----------------------*/
 const canvas = document.querySelector('canvas.webgl')
 const scene = new THREE.Scene()
 const camera = new THREE.PerspectiveCamera(55, canvas.clientWidth/canvas.clientHeight, 0.001, 1000);
@@ -23,24 +25,17 @@ const axesHelper = new THREE.AxesHelper( 5 );
 scene.add( axesHelper );
 
 
-//Creating the wireframe initial CUBE
+/*---------------------
+//Scene World Definition
+----------------------*/
+//Creating the initial wireframe CUBE
 const cubeGeometry = new THREE.BoxGeometry(101, 101, 101);
 const cubeGeo = new THREE.EdgesGeometry( cubeGeometry ); 
 const lineMat = new THREE.LineBasicMaterial( { color:0x0000ff } );
 const lineMat2 = new THREE.LineBasicMaterial( { color:0xffffff } );
-const cubeMats = [	new THREE.MeshBasicMaterial({color:0xFFFFFF, transparent:true, opacity:.75, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1}),
-					new THREE.MeshBasicMaterial({color:0xFFEBEB, transparent:true, opacity:.75, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1}),
-					new THREE.MeshBasicMaterial({color:0xFFD3D3, transparent:true, opacity:.75, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1}),				
-					new THREE.MeshBasicMaterial({color:0xFFC6C6, transparent:true, opacity:.75, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1}),
-					new THREE.MeshBasicMaterial({color:0xFFB2B2, transparent:true, opacity:.75, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1}),
-					new THREE.MeshBasicMaterial({color:0xFF9C9C, transparent:true, opacity:.75, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1}),
-					new THREE.MeshBasicMaterial({color:0xFF6E6E, transparent:true, opacity:.75, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1}),
-					new THREE.MeshBasicMaterial({color:0xFF8A8A, transparent:true, opacity:.75, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1}),
-					new THREE.MeshBasicMaterial({color:0xFF5959, transparent:true, opacity:.75, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1}),
-					new THREE.MeshBasicMaterial({color:0xFF3333, transparent:true, opacity:.75, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1}),
-					new THREE.MeshBasicMaterial({color:0xFF0000, transparent:true, opacity:.75, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1})]
 const cubeWire = new THREE.LineSegments( cubeGeo, lineMat);
 scene.add(cubeWire) 
+
 //3D Text Axis
 const loader = new THREE.FontLoader();
 loader.load( './Roboto_Regular.json', function ( font ) {
@@ -63,13 +58,13 @@ loader.load( './Roboto_Regular.json', function ( font ) {
 });
 
 
-
+/*----------------------------
+//Arrays and Color Parameters
+------------------------------*/
 //Arrays
-
 var canl = [33, 11, 15, 21, 20]; //x
 var ncsd = [12, 20, 12,	13,	12,	12, 19]; //y
 var vard = [40, 18, 6, 16, 20]; //z
-
 /*
 var canl = [50, 50]; //x
 var ncsd = [70, 30]; //y
@@ -91,6 +86,20 @@ var ncsd = [100]; //y
 var vard = [100]; //z
 */
 
+
+//Colors
+const cubeMats = [	new THREE.MeshBasicMaterial({color:0xFFFFFF, transparent:true, opacity:.75, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1}),
+	new THREE.MeshBasicMaterial({color:0xFFEBEB, transparent:true, opacity:.75, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1}),
+	new THREE.MeshBasicMaterial({color:0xFFD3D3, transparent:true, opacity:.75, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1}),				
+	new THREE.MeshBasicMaterial({color:0xFFC6C6, transparent:true, opacity:.75, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1}),
+	new THREE.MeshBasicMaterial({color:0xFFB2B2, transparent:true, opacity:.75, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1}),
+	new THREE.MeshBasicMaterial({color:0xFF9C9C, transparent:true, opacity:.75, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1}),
+	new THREE.MeshBasicMaterial({color:0xFF6E6E, transparent:true, opacity:.75, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1}),
+	new THREE.MeshBasicMaterial({color:0xFF8A8A, transparent:true, opacity:.75, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1}),
+	new THREE.MeshBasicMaterial({color:0xFF5959, transparent:true, opacity:.75, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1}),
+	new THREE.MeshBasicMaterial({color:0xFF3333, transparent:true, opacity:.75, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1}),
+	new THREE.MeshBasicMaterial({color:0xFF0000, transparent:true, opacity:.75, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1})]
+
 var colors = [];
 function randomColors(){
 	for(var i=0; i<=(canl.length*ncsd.length*vard.length); i++){
@@ -98,9 +107,11 @@ function randomColors(){
 	}
 }
 
+
 //------------------------------------
 //Inputs iniciales y botomos de slice
 //------------------------------------
+//HTML Dom Getters
 const ncsd_list = document.getElementById("nsc-cont");
 const vard_list = document.getElementById("vrd-cont");
 const canl_list = document.getElementById("cnl-cont");
@@ -108,20 +119,32 @@ const canl_slc = document.getElementById("top-slices");
 const vard_slc = document.getElementById("right-slices");
 const nscd_slc = document.getElementById("left-slices");
 const color_slc = document.getElementById("color");
-//Add input lists and buttons for slices 
+const mas_n = document.getElementById("+n");
+const mas_c = document.getElementById("+c");
+const mas_v = document.getElementById("+v");
+const mns_n = document.getElementById("-n");
+const mns_c = document.getElementById("-c");
+const mns_v = document.getElementById("-v");
+const render_button = document.getElementById("render-btn");
+const update_button = document.getElementById("updt-btn");
+const opacity_slider = document.getElementById("opacity-slider");
+opacity_slider.value = 75;
+
+//Add input lists and buttons for slices and color filters
 addList(ncsd, ncsd_list, nscd_slc, "N");
 addList(vard, vard_list, vard_slc,  "V");
 addList(canl, canl_list, canl_slc, "C");
 addColorFilter();
+
 //Sums
 const ncsd_sum = document.getElementById("sum-n");
 const vard_sum = document.getElementById("sum-v");
 const canl_sum = document.getElementById("sum-c");
-
-//Por cada Necesidad, Canal, Variedad crear un input field
 makeSum(ncsd, ncsd_sum);
 makeSum(canl, canl_sum);
 makeSum(vard, vard_sum);
+
+//For every Necesidad, Canal, Variedad create an input field
 function addList(list, container, buttons, letter){
 	var i = 0;
 	container.innerHTML = "";
@@ -150,6 +173,7 @@ function addList(list, container, buttons, letter){
 		i++;
 	}
 }
+//For every color create a filter button
 function addColorFilter(){
 	for(var i=0; i<=cubeMats.length-1; i++){
 		var btn = document.createElement('button');
@@ -165,14 +189,16 @@ function addColorFilter(){
 		color_slc.appendChild(btn);
 	}
 }
+//Sums
 function makeSum(list, container){
 	const suma = list.reduce(sum, 0);
 	container.innerHTML=`<p>Total:${suma}</p>`
 }
 
-//--------------------------------------------------------
-//Render cubes a partir de la informacion en los arreglos.
-//--------------------------------------------------------
+
+//--------------------------------------------
+//Render cubes from information on the arrays.
+//--------------------------------------------
 var cubes;
 function renderCubes(filter){
 	var sumVard = vard.reduce(sum, 0);
@@ -221,19 +247,8 @@ renderCubes([NaN, NaN, NaN, NaN]);
 
 
 //-----------------------------------------------------
-//Botones de interaccion para nuevos inputs y opacidad
+//Eventos de interaccion para nuevos inputs y opacidad
 //-----------------------------------------------------
-const opacity_slider = document.getElementById("opacity-slider");
-opacity_slider.value = 75;
-const render_button = document.getElementById("render-btn");
-const update_button = document.getElementById("updt-btn")
-const mas_n = document.getElementById("+n");
-const mas_c = document.getElementById("+c");
-const mas_v = document.getElementById("+v");
-const mns_n = document.getElementById("-n");
-const mns_c = document.getElementById("-c");
-const mns_v = document.getElementById("-v");
-
 render_button.addEventListener('click', () => {renderNew([NaN, NaN, NaN])})
 update_button.addEventListener('click', () => {getNewValues()})
 opacity_slider.addEventListener('input', (e) => {
@@ -271,8 +286,7 @@ mns_v.addEventListener('click', (e) => {
 	addList(vard,vard_list, vard_slc, "V")
 	makeSum(vard,vard_sum);
 })
-	
-
+//Render from values in vector input fields
 function getNewValues(){
 	ncsd = getValue("N-inner-inpt");
 	canl = getValue("C-inner-inpt");
@@ -282,6 +296,7 @@ function getNewValues(){
 	makeSum(vard, vard_sum);
 	renderNew([NaN, NaN, NaN]);
 }
+//Get values in vetor input fields
 function getValue(clas){
 	var htmls = document.getElementsByClassName(clas);
 	var arr = [];
@@ -296,8 +311,9 @@ function renderNew(filter){
 }
 
 
-scene.add(new THREE.AmbientLight(0xffffff))
-
+/*----------------
+//Animation Loop
+-----------------*/
 renderer.setAnimationLoop(() => {
 	controls.update();
 	renderer.render(scene, camera)	
