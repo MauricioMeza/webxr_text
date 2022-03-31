@@ -28,10 +28,16 @@ const cubeGeometry = new THREE.BoxGeometry(101, 101, 101);
 const cubeGeo = new THREE.EdgesGeometry( cubeGeometry ); 
 const lineMat = new THREE.LineBasicMaterial( { color:0x0000ff } );
 const lineMat2 = new THREE.LineBasicMaterial( { color:0xffffff } );
-const cubeMats = [	new THREE.MeshBasicMaterial({color:0xAAAAAA, transparent:true, opacity:.75, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1}),
-					new THREE.MeshBasicMaterial({color:0x70AD47, transparent:true, opacity:.75, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1}),
-					new THREE.MeshBasicMaterial({color:0x5B9BD5, transparent:true, opacity:.75, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1}),
-					new THREE.MeshBasicMaterial({color:0xFFC000, transparent:true, opacity:.75, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1}),
+const cubeMats = [	new THREE.MeshBasicMaterial({color:0xFFFFFF, transparent:true, opacity:.75, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1}),
+					new THREE.MeshBasicMaterial({color:0xFFEBEB, transparent:true, opacity:.75, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1}),
+					new THREE.MeshBasicMaterial({color:0xFFD3D3, transparent:true, opacity:.75, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1}),				
+					new THREE.MeshBasicMaterial({color:0xFFC6C6, transparent:true, opacity:.75, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1}),
+					new THREE.MeshBasicMaterial({color:0xFFB2B2, transparent:true, opacity:.75, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1}),
+					new THREE.MeshBasicMaterial({color:0xFF9C9C, transparent:true, opacity:.75, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1}),
+					new THREE.MeshBasicMaterial({color:0xFF6E6E, transparent:true, opacity:.75, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1}),
+					new THREE.MeshBasicMaterial({color:0xFF8A8A, transparent:true, opacity:.75, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1}),
+					new THREE.MeshBasicMaterial({color:0xFF5959, transparent:true, opacity:.75, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1}),
+					new THREE.MeshBasicMaterial({color:0xFF3333, transparent:true, opacity:.75, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1}),
 					new THREE.MeshBasicMaterial({color:0xFF0000, transparent:true, opacity:.75, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1})]
 const cubeWire = new THREE.LineSegments( cubeGeo, lineMat);
 scene.add(cubeWire) 
@@ -88,7 +94,7 @@ var vard = [100]; //z
 var colors = [];
 function randomColors(){
 	for(var i=0; i<=(canl.length*ncsd.length*vard.length); i++){
-		colors.push(Math.floor(Math.random()*5));
+		colors.push(Math.floor(Math.random()*cubeMats.length));
 	}
 }
 
@@ -145,9 +151,11 @@ function addList(list, container, buttons, letter){
 	}
 }
 function addColorFilter(){
-	for(var i=0; i<=4; i++){
+	for(var i=0; i<=cubeMats.length-1; i++){
 		var btn = document.createElement('button');
-		btn.innerHTML = "(" +  i + ")";
+		const total = 100/(cubeMats.length-1)
+		btn.innerHTML = (i*total) + "%";
+		btn.style.width = "8%"
 		btn.setAttribute("color", i);
 		btn.addEventListener('click', (e) =>{e.preventDefault();
 											var colorFilter = parseInt(e.target.getAttribute('color'));
@@ -216,6 +224,7 @@ renderCubes([NaN, NaN, NaN, NaN]);
 //Botones de interaccion para nuevos inputs y opacidad
 //-----------------------------------------------------
 const opacity_slider = document.getElementById("opacity-slider");
+opacity_slider.value = 75;
 const render_button = document.getElementById("render-btn");
 const update_button = document.getElementById("updt-btn")
 const mas_n = document.getElementById("+n");
