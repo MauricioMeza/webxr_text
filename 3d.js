@@ -61,7 +61,7 @@ loader.load( './Roboto_Regular.json', function ( font ) {
 //Arrays
 
 var canl = [33, 11, 15, 21, 20]; //x
-var ncsd = [12, 20, 3, 12,	13,	12,	12, 16]; //y
+var ncsd = [12, 20, 12,	13,	12,	12, 19]; //y
 var vard = [40, 18, 6, 16, 20]; //z
 
 /*
@@ -86,9 +86,12 @@ var vard = [100]; //z
 */
 
 var colors = [];
-for(var i=0; i<=(canl.length*ncsd.length*vard.length); i++){
-	colors.push(Math.floor(Math.random()*5));
+function randomColors(){
+	for(var i=0; i<=(canl.length*ncsd.length*vard.length); i++){
+		colors.push(Math.floor(Math.random()*5));
+	}
 }
+
 //------------------------------------
 //Inputs iniciales y botomos de slice
 //------------------------------------
@@ -167,8 +170,9 @@ function renderCubes(filter){
 	var sumVard = vard.reduce(sum, 0);
 	var sumNcsd = ncsd.reduce(sum, 0);
 	var sumCanl = canl.reduce(sum, 0);
+	randomColors();
 	var i=0;
-	if(sumVard == 100 && sumNcsd == 100 && sumCanl==100){
+	if(sumVard==100 && sumNcsd==100 && sumCanl==100){
 		cubes = new THREE.Object3D();
 		for (var v = 0; v<vard.length; v++) {
 			for (var n = 0; n<ncsd.length; n++) {
@@ -197,6 +201,7 @@ function renderCubes(filter){
 		}
 		cubes.position.set((canl[0]/2)-50, (ncsd[0]/2)-50, (vard[0]/2)-50);
 		scene.add(cubes)
+		console.log(cubes)
 	}else{
 		throw "Sumatoria no es exacta";
 	}	
