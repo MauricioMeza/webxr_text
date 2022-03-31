@@ -23,18 +23,39 @@ const axesHelper = new THREE.AxesHelper( 5 );
 scene.add( axesHelper );
 
 
-//Creating the wireframe initial cUBE
+//Creating the wireframe initial CUBE
 const cubeGeometry = new THREE.BoxGeometry(101, 101, 101);
 const cubeGeo = new THREE.EdgesGeometry( cubeGeometry ); 
 const lineMat = new THREE.LineBasicMaterial( { color:0x0000ff } );
 const lineMat2 = new THREE.LineBasicMaterial( { color:0xffffff } );
-const cubeMats = [	new THREE.MeshBasicMaterial({color:0xAAAAAA, transparent:true, opacity:.5, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1}),
-					new THREE.MeshBasicMaterial({color:0x70AD47, transparent:true, opacity:.5, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1}),
-					new THREE.MeshBasicMaterial({color:0x5B9BD5, transparent:true, opacity:.5, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1}),
-					new THREE.MeshBasicMaterial({color:0xFFC000, transparent:true, opacity:.5, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1}),
-					new THREE.MeshBasicMaterial({color:0xFF0000, transparent:true, opacity:.5, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1})]
+const cubeMats = [	new THREE.MeshBasicMaterial({color:0xAAAAAA, transparent:true, opacity:.75, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1}),
+					new THREE.MeshBasicMaterial({color:0x70AD47, transparent:true, opacity:.75, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1}),
+					new THREE.MeshBasicMaterial({color:0x5B9BD5, transparent:true, opacity:.75, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1}),
+					new THREE.MeshBasicMaterial({color:0xFFC000, transparent:true, opacity:.75, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1}),
+					new THREE.MeshBasicMaterial({color:0xFF0000, transparent:true, opacity:.75, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1})]
 const cubeWire = new THREE.LineSegments( cubeGeo, lineMat);
 scene.add(cubeWire) 
+//3D Text Axis
+const loader = new THREE.FontLoader();
+loader.load( './Roboto_Regular.json', function ( font ) {
+	const properties = {font: font, size: 10, height: 2, curveSegments: 12}
+	const textNGeometry = new THREE.TextGeometry( 'NECESIDADES',  properties);
+	const textVGeometry = new THREE.TextGeometry( 'VARIEDADES', properties);
+	const textCGeometry = new THREE.TextGeometry( 'CANALES', properties);
+	const textMaterial = new THREE.MeshBasicMaterial({color:0xFFFFFF});
+	const textNMesh = new THREE.Mesh(textNGeometry, textMaterial);
+	const textVMesh = new THREE.Mesh(textVGeometry, textMaterial);
+	const textCMesh = new THREE.Mesh(textCGeometry, textMaterial);
+	textNMesh.rotation.set(0, 0, Math.PI/2);
+	textNMesh.position.set(-55, -45, -55 )
+	textVMesh.rotation.set(-Math.PI/2, 0, -Math.PI/2);
+	textVMesh.position.set(-65, -55, -44)
+	textCMesh.position.set(-30, 55, -55);
+	scene.add(textNMesh);
+	scene.add(textVMesh);
+	scene.add(textCMesh);
+});
+
 
 
 //Arrays
