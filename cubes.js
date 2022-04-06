@@ -16,14 +16,13 @@ class Cubes{
                         new THREE.MeshBasicMaterial({color:0xFF3333, transparent:true, opacity:.75, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1}),
                         new THREE.MeshBasicMaterial({color:0xFF0000, transparent:true, opacity:.75, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1})];
         this.lineMat = new THREE.LineBasicMaterial( { color:0xffffff } );
-        this.randomColors(vecs);
     }
 
-    renderCubes(filter, vecs, scene){
+    renderCubes(filter, vecs, scene, empresas){
         var sumVard = vecs.vard.reduce(this.sum, 0);
         var sumNcsd = vecs.ncsd.reduce(this.sum, 0);
         var sumCanl = vecs.canl.reduce(this.sum, 0);
-        this.randomColors(vecs);
+        this.makeColors(vecs, empresas);
         var i=0;
         if(sumVard==100 && sumNcsd==100 && sumCanl==100){
             this.cubes = new THREE.Object3D();
@@ -62,10 +61,27 @@ class Cubes{
         return sum + a;
     }
 
-    randomColors(vecs){
-        for(var i=0; i<=(vecs.canl.length*vecs.ncsd.length*vecs.vard.length); i++){
-            this.colors.push(Math.floor(Math.random()*this.cubeMats.length));
+    //Count all cubes were the three vectors are true
+    makeColors(vecs, empresas){
+        var i = 0;
+        this.colors = [];
+        for (var v = 0; v<vecs.vard.length; v++) {
+            for (var n = 0; n<vecs.ncsd.length; n++) {
+                for (var c = 0; c<vecs.canl.length; c++) {
+                    this.colors.push(0)
+                    for(const empresa of empresas){
+                        if(empresa.vecs[0][n] && empresa.vecs[1][v] && empresa.vecs[2][c]){
+                            this.colors[i] += 1;
+                        }
+                    }	
+                    i++;
+                }
+            }	
         }
+        for(var i=0; i<this.colors.length; i++) {
+            this.colors[i] = (this.colors[i]/empresas.length) * 10 
+        }
+        console.log(this.colors)
     }
 
 }export default Cubes

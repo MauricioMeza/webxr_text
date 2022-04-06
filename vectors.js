@@ -3,7 +3,6 @@ class Vectores{
         this.ncsd = [33, 11, 15, 21, 20];
         this.vard = [12, 39, 12, 13, 24];
         this.canl = [40, 18, 6, 16, 20];
-        
     }
 }export default Vectores
 

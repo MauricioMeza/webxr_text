@@ -2,6 +2,7 @@ import * as THREE from 'https://cdn.skypack.dev/three@0.132.2/build/three.module
 import {OrbitControls} from 'https://cdn.skypack.dev/three@0.132.2/examples/jsm/controls/OrbitControls.js'
 import Vectores from './vectors.js';
 import Cubes from './cubes.js';
+import Empresa from './empresa.js'
 
 /*---------------------
 //Boilerplate Settings
@@ -10,7 +11,7 @@ const canvas = document.querySelector('canvas.webgl')
 const scene = new THREE.Scene()
 const camera = new THREE.PerspectiveCamera(55, canvas.clientWidth/canvas.clientHeight, 0.001, 1000);
 scene.add(camera);
-const renderer = new THREE.WebGLRenderer({canvas: canvas, antialias: true})
+const renderer = new THREE.WebGLRenderer({canvas: canvas, antialias: false})
 renderer.setSize(canvas.clientWidth, canvas.clientHeight)
 renderer.setPixelRatio(window.devicePixelRatio)
 window.addEventListener('resize', (e) => {
@@ -112,10 +113,25 @@ makeSum(vecs.canl, canl_sum);
 makeSum(vecs.vard, vard_sum);
 
 function randomEmpresas(){
-	for(var i=0; i<empresas_num.value; i++){
-		empresas.push("")
-	}	
-	addEmpresas();	
+	if(empresas.length == 0){
+		for(var i=0; i<empresas_num.value; i++){
+			empresas.push(new Empresa());
+		}	
+	}else{
+		var num = empresas_num.value - empresas.length;
+		console.log(num)
+		if(num < 0){
+			for(num; num<0; num++){
+				empresas.pop()
+			}		
+		}else if(num > 0){
+			for(num; num>0; num--){
+				empresas.push(new Empresa());
+			}		
+		}
+	}
+	console.log(empresas)
+	addEmpresasUI();	
 }
 //For every Necesidad, Canal, Variedad create an input field
 function addList(list, container, buttons, letter){
@@ -156,13 +172,13 @@ function addColorFilter(){
 		btn.setAttribute("color", i);
 		btn.addEventListener('click', (e) =>{e.preventDefault();
 											var colorFilter = parseInt(e.target.getAttribute('color'));
-											console.log(colorFilter)
 											renderNew([NaN, NaN, NaN, colorFilter])
 											})
 		color_slc.appendChild(btn);
 	}
 }
-function addEmpresas(){
+//For every empresa add a UI checklist box
+function addEmpresasUI(){
 	empresas_cont.innerHTML = "";
 	for(var i=0; i<empresas.length; i++){
 		const empresaContainer = document.createElement("div")
@@ -173,24 +189,32 @@ function addEmpresas(){
 		empresaContainer.append(empresaTitle);
 		const checksCol = document.createElement("div")
 		checksCol.className = "col-10";
-		checksCol.append(addCheck(vecs.ncsd, "N"));
-		checksCol.append(addCheck(vecs.vard, "V"));
-		checksCol.append(addCheck(vecs.canl, "C"));
+		checksCol.append(addCheck(vecs.ncsd, "N", i, 0));
+		checksCol.append(addCheck(vecs.vard, "V", i, 1));
+		checksCol.append(addCheck(vecs.canl, "C", i, 2));
 		empresaContainer.append(checksCol);
 		empresas_cont.append(empresaContainer);
 	}
 }
-function addCheck(list, char){
+function addCheck(list, char, i, empresaVector){
 	const checksRow = document.createElement("div")
 	checksRow.className = "row empresa-checks-row"
 	for(var j=0; j<list.length; j++){
 		const checkContainer = document.createElement("span")
 		checkContainer.className = "empresa-check";
-		checkContainer.innerHTML = `<p class="empresa-label">${char + j}</p>`
+		checkContainer.innerHTML = `<p class="empresa-label">${char + (j+1)}</p>`
 		const check = document.createElement("input");
 		check.type = "checkBox";
-		check.setAttribute("value", char+j)
-		check.addEventListener("input", (e) =>{console.log(e.target.getAttribute("value"))})
+		check.checked = empresas[i].vecs[empresaVector][j]
+		check.setAttribute("empresa", i)
+		check.setAttribute("vector", empresaVector)
+		check.setAttribute("vec-num", j)
+		check.addEventListener("input", (e) =>{
+			const emp = e.target.getAttribute("empresa");
+			const vec = e.target.getAttribute("vector");
+			const num = e.target.getAttribute("vec-num");
+			empresas[emp].vecs[vec][num] = e.target.checked;	
+		})
 		checkContainer.append(check);
 		checksRow.append(checkContainer)
 	}
@@ -206,25 +230,26 @@ function makeSum(list, container){
 //--------------------------------------------
 //Render cubes from information on the arrays.
 //--------------------------------------------
-cubes.renderCubes([NaN, NaN, NaN, NaN], vecs, scene);
+cubes.renderCubes([NaN, NaN, NaN, NaN], vecs, scene, empresas);
 
 
 //-----------------------------------------------------
 //Eventos de interaccion para nuevos inputs y opacidad
 //-----------------------------------------------------
-render_button.addEventListener('click', () => {cubes.renderNew([NaN, NaN, NaN])})
+render_button.addEventListener('click', () => {renderNew([NaN, NaN, NaN])})
 update_button.addEventListener('click', () => {getNewValues()})
-opacity_slider.addEventListener('input', (e) => {
-	for(var mat of cubes.cubeMats){
-		mat.opacity = e.target.value/100
-	}
-})
+empresas_num.addEventListener('input', randomEmpresas)
 mas_n.addEventListener('click', (e) => {e.preventDefault(); changeList(vecs.ncsd, ncsd_list, nscd_slc, ncsd_sum, "N", true)})
 mas_c.addEventListener('click', (e) => {e.preventDefault(); changeList(vecs.canl, canl_list, canl_slc, canl_sum, "C", true)})
 mas_v.addEventListener('click', (e) => {e.preventDefault(); changeList(vecs.vard, vard_list, vard_slc, vard_sum, "V", true)})
 mns_n.addEventListener('click', (e) => {e.preventDefault(); changeList(vecs.ncsd, ncsd_list, nscd_slc, ncsd_sum, "N", false)})
 mns_c.addEventListener('click', (e) => {e.preventDefault(); changeList(vecs.canl, canl_list, canl_slc, canl_sum, "C", false)})
 mns_v.addEventListener('click', (e) => {e.preventDefault(); changeList(vecs.vard, vard_list, vard_slc, vard_sum, "V", false)})
+opacity_slider.addEventListener('input', (e) => {
+	for(var mat of cubes.cubeMats){
+		mat.opacity = e.target.value/100
+	}
+})
 function changeList(vec, vec_list, vec_slc, vec_sum, char, add){
 	if(add){
 		vec.push(0);
@@ -233,6 +258,7 @@ function changeList(vec, vec_list, vec_slc, vec_sum, char, add){
 	}
 	addList(vec, vec_list, vec_slc, char); 
 	makeSum(vec, vec_sum)
+	randomEmpresas();
 }
 //Render from values in vector input fields
 function getNewValues(){
@@ -242,7 +268,7 @@ function getNewValues(){
 	makeSum(vecs.ncsd, ncsd_sum);
 	makeSum(vecs.canl, canl_sum);
 	makeSum(vecs.vard, vard_sum);
-	cubes.renderNew([NaN, NaN, NaN], vecs, scene);
+	renderNew([NaN, NaN, NaN]);
 }
 //Get values in vetor input fields
 function getValue(clas){
@@ -255,7 +281,7 @@ function getValue(clas){
 }
 function renderNew(filter){
 	scene.remove(cubes.cubes); 
-	cubes.renderCubes(filter, vecs, scene);
+	cubes.renderCubes(filter, vecs, scene, empresas);
 }
 
 
