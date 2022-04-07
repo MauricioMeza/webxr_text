@@ -24,6 +24,33 @@ window.addEventListener('resize', (e) => {
 const controls = new OrbitControls(camera, renderer.domElement);
 camera.position.set(0, 200, 200);
 
+const ray = new THREE.Raycaster();
+const rect = canvas.getBoundingClientRect();
+var objSelected = null;
+var selectMat = new THREE.MeshBasicMaterial({color:0x00FF00})
+document.addEventListener('mousemove', (e) =>{
+	const mouse3D = new THREE.Vector2(0,0);
+	mouse3D.x = (e.clientX / canvas.clientWidth) * 2 - 1;
+	mouse3D.y = -(e.clientY / canvas.clientHeight) * 2 + 1 ;
+	if(mouse3D.x <= 1 && mouse3D.y <=1){
+		ray.setFromCamera(mouse3D, camera);
+		var intersect = ray.intersectObjects(cubes.cubes.children);
+		if(intersect.length > 0 && intersect[0].object.name=="cubitodubidu"){
+			if(objSelected !== null){
+				if(intersect[0].object !== objSelected){
+					objSelected.material = objSelected.userData.orglMat;	
+				}
+			}
+			objSelected = intersect[0].object;
+			objSelected.material = selectMat;
+
+		}else if((intersect.length == 0 && objSelected != null)){
+			objSelected.material = objSelected.userData.orglMat;
+			objSelected = null;
+		}
+	}
+})
+
 //Animation Loop
 renderer.setAnimationLoop(() => {
 	controls.update();
@@ -37,8 +64,8 @@ renderer.setAnimationLoop(() => {
 const cubeGeometry = new THREE.BoxGeometry(101, 101, 101);
 const cubeGeo = new THREE.EdgesGeometry( cubeGeometry ); 
 const lineMat = new THREE.LineBasicMaterial( { color:0x0000ff } );
-
 const cubeWire = new THREE.LineSegments( cubeGeo, lineMat);
+cubeWire.name = "lineasCubo"
 scene.add(cubeWire) 
 
 //3D Text Axis
@@ -52,6 +79,9 @@ loader.load( './Roboto_Regular.json', function ( font ) {
 	const textNMesh = new THREE.Mesh(textNGeometry, textMaterial);
 	const textVMesh = new THREE.Mesh(textVGeometry, textMaterial);
 	const textCMesh = new THREE.Mesh(textCGeometry, textMaterial);
+	textCMesh.name = "Canales";
+	textCMesh.name = "Variedades";
+	textCMesh.name = "Necesidades";
 	textNMesh.rotation.set(0, 0, Math.PI/2);
 	textNMesh.position.set(-55, -45, -55 )
 	textVMesh.rotation.set(-Math.PI/2, 0, -Math.PI/2);

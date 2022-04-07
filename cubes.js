@@ -26,6 +26,7 @@ class Cubes{
         var i=0;
         if(sumVard==100 && sumNcsd==100 && sumCanl==100){
             this.cubes = new THREE.Object3D();
+            this.cubes.name = "loscubitosdubidu"
             for (var v = 0; v<vecs.vard.length; v++) {
                 for (var n = 0; n<vecs.ncsd.length; n++) {
                     for (var c = 0; c<vecs.canl.length; c++) {
@@ -37,11 +38,13 @@ class Cubes{
                         if(c == cf && n == nf && v==vf && this.colors[i]==color){
                             const cubeGeometry = new THREE.BoxGeometry(vecs.canl[c], vecs.ncsd[n], vecs.vard[v]);
                             const cubeMesh = new THREE.Mesh(cubeGeometry, this.cubeMats[this.colors[i]]);
+                            cubeMesh.userData = {orglMat: this.cubeMats[this.colors[i]]};
                             const pos = new THREE.Vector3(0,0,0);
                             (c > 0) ? pos.x = vecs.canl[0]/2 + vecs.canl.slice(1, c).reduce(this.sum, 0) + vecs.canl[c]/2 : pos.x;
                             (n > 0) ? pos.y = vecs.ncsd[0]/2 + vecs.ncsd.slice(1, n).reduce(this.sum, 0) + vecs.ncsd[n]/2 : pos.y;
                             (v > 0) ? pos.z = vecs.vard[0]/2 + vecs.vard.slice(1, v).reduce(this.sum, 0) + vecs.vard[v]/2 : pos.z;
                             cubeMesh.position.set(pos.x, pos.y, pos.z);
+                            cubeMesh.name = "cubitodubidu"
                             this.cubes.add(cubeMesh)
                             const cubeGeo = new THREE.EdgesGeometry( cubeGeometry );
                             const cubeWire = new THREE.LineSegments( cubeGeo, this.lineMat);
