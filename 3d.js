@@ -43,10 +43,13 @@ document.addEventListener('mousemove', (e) =>{
 			}
 			objSelected = intersect[0].object;
 			objSelected.material = selectMat;
-
+			info_slc.innerHTML = `	Necesidad:${objSelected.userData.n}, 
+									Variedad:${objSelected.userData.v}, 
+									Canal:${objSelected.userData.n}`
 		}else if((intersect.length == 0 && objSelected != null)){
 			objSelected.material = objSelected.userData.orglMat;
 			objSelected = null;
+			info_slc.innerHTML = "Necesidad:x, Variedad:x, Canal:x"
 		}
 	}
 })
@@ -114,6 +117,7 @@ const canl_slc = document.getElementById("top-slices");
 const vard_slc = document.getElementById("right-slices");
 const nscd_slc = document.getElementById("left-slices");
 const color_slc = document.getElementById("color");
+const info_slc = document.getElementById("info");
 const mas_n = document.getElementById("+n");
 const mas_c = document.getElementById("+c");
 const mas_v = document.getElementById("+v");

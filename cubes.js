@@ -38,7 +38,6 @@ class Cubes{
                         if(c == cf && n == nf && v==vf && this.colors[i]==color){
                             const cubeGeometry = new THREE.BoxGeometry(vecs.canl[c], vecs.ncsd[n], vecs.vard[v]);
                             const cubeMesh = new THREE.Mesh(cubeGeometry, this.cubeMats[this.colors[i]]);
-                            cubeMesh.userData = {orglMat: this.cubeMats[this.colors[i]]};
                             const pos = new THREE.Vector3(0,0,0);
                             (c > 0) ? pos.x = vecs.canl[0]/2 + vecs.canl.slice(1, c).reduce(this.sum, 0) + vecs.canl[c]/2 : pos.x;
                             (n > 0) ? pos.y = vecs.ncsd[0]/2 + vecs.ncsd.slice(1, n).reduce(this.sum, 0) + vecs.ncsd[n]/2 : pos.y;
@@ -49,6 +48,8 @@ class Cubes{
                             const cubeGeo = new THREE.EdgesGeometry( cubeGeometry );
                             const cubeWire = new THREE.LineSegments( cubeGeo, this.lineMat);
                             cubeMesh.add(cubeWire);
+                            cubeMesh.userData={ orglMat: this.cubeMats[this.colors[i]], 
+                                                n:(n+1), v:(v+1), c:(c+1)};
                         }		
                         i++;
                     }

@@ -46,6 +46,10 @@ html
     z-index: 5;
     position: absolute;
 }
+#info{
+    background-color: #999999;
+    padding: 4px 8px;
+}
 #settings-3d{
     height: 10vh;
     position: relative;
