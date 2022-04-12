@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import {FirstPersonControls} from 'three/examples/jsm/controls/FirstPersonControls'
-//import {VRButton} from 'three/examples/jsm/webxr/VRButton'
+import {VRButton} from 'three/examples/jsm/webxr/VRButton'
 import World from './world';
 import Camera from './camera';
 import './hamburger'
@@ -44,12 +44,11 @@ for(var i=0; i<300; i++){
 scroller.innerHTML = string;
 
 //VRControls
-/*
 renderer.xr.enabled = true;
 var vrButton = VRButton.createButton(renderer)
 vrButton.style.position = 'fixed';
 document.body.appendChild(vrButton);
-*/
+
 
 //events and actions
 canvas.addEventListener('mousemove', (e) => {camera.updateMouse(e)});
