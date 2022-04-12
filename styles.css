@@ -3,122 +3,334 @@
     padding: 0;
     margin: 0;
 }
-
 body,
 html
 {
     width: 100%;
     height: 100%;
-    font-family: Arial, Helvetica, sans-serif;
+}
+#scroller{
+    overflow: scroll;
+    z-index: 1;
 }
 
-/*----3D Model and Settings----*/
 .webgl
 {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
-    height: 88vh;
+    height: 100%;
     background: #000000;
     z-index: 2;
 }
-.slices{
-    text-align: center;
-    width: 100%;
-    z-index: 5;
-    position: absolute;
-}
-#top-slices{
-    margin: auto;
+#hud-ovrly{
+    position: fixed;
     top: 0;
-}
-#right-slices{
-    margin: auto;
-    top: 5vh;
-}
-#left-slices{
-    margin: auto;
-    top: 10vh;
-}
-#color{
-    margin: auto;
-    bottom: 15vh;
-    text-align: center;
+    left: 0;
     width: 100%;
-    z-index: 5;
-    position: absolute;
+    height: 100%;
+    z-index: 3;
+    pointer-events: none;
 }
-#info{
-    background-color: #999999;
-    padding: 4px 8px;
+
+/*----------Header-------------*/
+#header{
+    position: fixed;
+    width: 100%;
+    top: 8vh;
+    z-index: 4;
+    color: white;
 }
-#settings-3d{
-    height: 10vh;
+#head-logo{
+    height: 60px;
+    width: 200px;
     position: relative;
-    float: bottom;
-    bottom: 0;
-    z-index: 5;
+    float: left;
+    left: 8vw;
 }
-#opacity-slider{
-    width: 70%;
-    margin-left: 5%;  
+#nav-btn{
+    background-image: url("./assets/menu-open.png"); 
+    background-size: cover;
+    position: relative;
+    float: right;
+    right: 7vw;
 }
-#render-btn{
-    width: 100%;
-    margin: 2px;
+#head-menu{
+    display: none;
+    position: fixed;
+    top: 18vh;
+    right: 6.5vw;
+}
+.head-menu-cont{
+    margin-bottom: -0.5vh;
+}
+.head-menu-btn{
+    width: 40vh;
+    height: auto;
+    opacity: .75;
+}
+.head-menu-btn:hover{
+    opacity: 1;
+    cursor: pointer;
 }
 
-
-/*----Params, Vectors and Empresas----*/
-.params{
-    text-align: center;
-    overflow-y: scroll;
-    max-height: 100vh;
-}
-.tbl{
+/*---------- Modal -------------*/
+#modal{
+    display: none;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 65vw;
     border: solid;
-    border-width: 0 2px 0 0;
+    border: 10px;
+    border-style: solid;
+    border-color: #0078ff;
+    background-image:
+    linear-gradient(
+      to top left, 
+      #052997, #008cb3
+    );
+    z-index: 5; 
+    pointer-events: all;
 }
-.V-inner-inpt, .C-inner-inpt, .N-inner-inpt{
+#modal-content{
+    margin-left: 5%;
+}
+#close-btn{
+    background-image: url("./assets/menu-close.png"); 
+    background-size: cover;
+    position: relative;
+    float: right;
+}
+#ceo-img{
+    vertical-align:middle;
     width: 100%;
+    max-width: 40vh;
+    max-height: 60vh;
+
 }
-#sum-n, #sum-v, #sum-c{
-    text-align: center;
-    font-weight: bold;
+#ceo-txt{
+    text-align: left;
+    position: relative;
+    float: left;
+    top: 50%;
+    left: -12.5%;
+    transform: translateY(-50%);
+    color: white !important;
 }
-#updt-btn{
-    width: 90%;
-    margin: 10px 0 10px 0;
+#ceo-txt h2{
+    font-size: 4vw;
 }
-#empresas-num-label{
-    display: inline-block;
-    width: 50%;
-    text-align: right;
+#ceo-txt h3{
+    font-size: 3vw;
+    color: white !important;
 }
-#empresas-num{
-    display: inline-block;
-    width: 20%;
-}
-.empresa-check{
+.ceo-icons{
+    filter: invert(100%);
     width: 10%;
+}
+.center-col{
+    height: 62vh;
+    white-space: nowrap;
+    text-align: center;
+}
+.center-helper{
     display: inline-block;
+    height: 100%;
+    vertical-align: middle;
 }
-.empresa-label{
-    margin: 0;
-    padding: 0;
-    font-size: 80%;
-}
-.empresa-title{
-    display: flex;
-    align-items:center;
-    justify-content:center;
-}
-.empresa-container{
-    border-top: solid 1px;
-    border-bottom: solid 1px;
-    -moz-border-bottom-colors: solid 1px;
-    padding: 0;
-    margin: 15px 0 0 0;
-}
-.empresa-checks-row{
+.pana-logo{
     width: 100%;
-    margin: auto;
 }
+.pana-text{
+    margin-top: 2vh;
+    font-size: 1.2vw;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+}
+.r-center{
+    padding: 12vh 0 12vh 0;
+}
+@media (max-width: 767px) {
+    .r-center{
+        padding: 0 0 0 0;
+    } 
+    .pana-text{
+        font-size: 2.5vw;
+    }
+    .center-col{
+        height: auto;
+    }
+    #ceo-txt{
+        text-align: center;
+        top: 0;
+        left: 25%;
+        transform: translateY(0);
+    }
+}
+
+/* ----Navigation Tool----*/
+#nav-buttons{
+    z-index: 3;
+    position: fixed;
+    right: 0;
+    top: 0;
+    margin-top: 32vh;
+    margin-right: 20px;
+    text-align: center;
+}
+.num-btn{
+    border-radius: 50%;
+    width: 2.5vw;
+    height: 2.5vw;
+    margin-top: 2vh;
+    padding: 2px;
+    border: 0;
+    background-image: url("./assets/nav-button.png");
+    background-size: cover;
+    background-color: rgba(255, 255, 255, 0);
+}
+.num-btn:hover{
+    cursor: pointer;
+}
+.num-btn:nth-child(1){
+    background-color: rgba(255, 255, 255);
+    margin-right: 2.5vw;
+}
+.num-btn:nth-child(3){
+    background-color: "transparent";
+    margin-right: .5vw;
+}
+.num-btn:nth-child(5){
+    margin-right: 0vw;
+}
+.num-btn:nth-child(7){
+    margin-right: .5vw;
+}
+.num-btn:nth-child(9){
+    margin-right: 2.5vw;
+}
+
+/*------Lower Buttons-----*/
+#change-move{
+    position: fixed;
+    width: 100%;
+    text-align: center;
+    bottom: 8vh;
+    z-index: 3;
+    color: white;
+    margin-left: .5vw;
+}
+
+/* -----Generic Button-----*/
+.btn{
+    border-radius: 50%;
+    border: none;
+    width: 60px;
+    height: 60px;
+    background-color: transparent;
+}
+.btn:hover{
+    background-color: #ffffff48;
+    cursor: pointer;
+}
+#ctrl-btn{
+    background-image: url("./assets/cview.png");
+    background-size: cover;
+}
+#newrona-btn{
+    position: fixed;
+    left: 1vw;
+    right: 0;
+    margin: auto;
+    bottom: 0.5vh;
+    z-index: 4;
+    height: 6vh;
+    width: auto;
+}
+
+
+/*-----Description and Title Hovers-----*/
+#titl-box{
+    position: fixed;
+    color: white;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    margin: 0 0 0 8%;
+    padding: 2%;
+    width: 24%;
+    z-index: 3;
+    background-color: #1a3683b0;
+    border: 4px;
+    border-style: solid;
+    border-color: #0078ff; 
+    text-align: center;
+    visibility: hidden;
+    -webkit-transition: opacity 100ms, visibility 100ms;
+    transition: opacity 100ms, visibility 100ms;
+}
+#desc-box{
+    position: fixed;
+    color: white;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    margin: 0 8% 0 0;
+    padding: 2%;
+    width: 26%;
+    z-index: 3;
+    background-color: #1a3683b0;
+    border: 10px;
+    border-style: solid;
+    border-color: #0078ff; 
+    text-align: justify;
+    text-justify: inter-word;
+    visibility: hidden;
+    -webkit-transition: opacity 100ms, visibility 100ms;
+    transition: opacity 100ms, visibility 100ms;
+}
+@media (max-width: 900px) and (orientation: landscape) {
+    #titl-box h2, #titl-box h4{
+        font-size: 5vh;
+    }
+    #desc-box{
+        font-size: 3.2vh;
+        line-height: 3.5vh;
+    }
+    #desc-box h3{
+        display: none;  
+        
+    }
+}
+@media (max-width: 776px) and (orientation: portrait) {
+    #titl-box{
+        margin: 10vh 0 0 0;
+        top: 20vh;
+        left: 0;
+        right: 0;
+        margin: 10% auto;
+        width: 80%;
+    }
+    #titl-box h2, #titl-box h4{
+        font-size: 3.5vh;
+    }
+    #desc-box h3{
+        display: none;  
+    }
+    #desc-box{
+        height: fit-content;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: 10% auto;
+        width: 80%;
+        font-size: 4.5vw;
+        line-height: 5.5vw;
+    }
+}
+
+
