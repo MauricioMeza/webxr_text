@@ -10,8 +10,8 @@ class Cubes{
                         new THREE.MeshBasicMaterial({color:0xFFC6C6, transparent:true, opacity:.75, polygonOffset: true, polygonOffsetFactor: 3, polygonOffsetUnits: 1}),
                         new THREE.MeshBasicMaterial({color:0xFFB2B2, transparent:true, opacity:.75, polygonOffset: true, polygonOffsetFactor: 4, polygonOffsetUnits: 1}),
                         new THREE.MeshBasicMaterial({color:0xFF9C9C, transparent:true, opacity:.75, polygonOffset: true, polygonOffsetFactor: 5, polygonOffsetUnits: 1}),
-                        new THREE.MeshBasicMaterial({color:0xFF6E6E, transparent:true, opacity:.75, polygonOffset: true, polygonOffsetFactor: 6, polygonOffsetUnits: 1}),
-                        new THREE.MeshBasicMaterial({color:0xFF8A8A, transparent:true, opacity:.75, polygonOffset: true, polygonOffsetFactor: 7, polygonOffsetUnits: 1}),
+                        new THREE.MeshBasicMaterial({color:0xFF8A8A, transparent:true, opacity:.75, polygonOffset: true, polygonOffsetFactor: 6, polygonOffsetUnits: 1}),
+                        new THREE.MeshBasicMaterial({color:0xFF6E6E, transparent:true, opacity:.75, polygonOffset: true, polygonOffsetFactor: 7, polygonOffsetUnits: 1}),
                         new THREE.MeshBasicMaterial({color:0xFF5959, transparent:true, opacity:.75, polygonOffset: true, polygonOffsetFactor: 8, polygonOffsetUnits: 1}),
                         new THREE.MeshBasicMaterial({color:0xFF3333, transparent:true, opacity:.75, polygonOffset: true, polygonOffsetFactor: 9, polygonOffsetUnits: 1}),
                         new THREE.MeshBasicMaterial({color:0xFF0000, transparent:true, opacity:.75, polygonOffset: true, polygonOffsetFactor: 10, polygonOffsetUnits: 1})];
@@ -26,7 +26,7 @@ class Cubes{
         var i=0;
         if(sumVard==100 && sumNcsd==100 && sumCanl==100){
             this.cubes = new THREE.Object3D();
-            this.cubes.name = "loscubitosdubidu"
+            this.cubes.name = "loscubitos"
             for (var v = 0; v<vecs.vard.length; v++) {
                 for (var n = 0; n<vecs.ncsd.length; n++) {
                     for (var c = 0; c<vecs.canl.length; c++) {
@@ -43,7 +43,7 @@ class Cubes{
                             (n > 0) ? pos.y = vecs.ncsd[0]/2 + vecs.ncsd.slice(1, n).reduce(this.sum, 0) + vecs.ncsd[n]/2 : pos.y;
                             (v > 0) ? pos.z = vecs.vard[0]/2 + vecs.vard.slice(1, v).reduce(this.sum, 0) + vecs.vard[v]/2 : pos.z;
                             cubeMesh.position.set(pos.x, pos.y, pos.z);
-                            cubeMesh.name = "cubitodubidu"
+                            cubeMesh.name = "cubito"
                             this.cubes.add(cubeMesh)
                             const cubeGeo = new THREE.EdgesGeometry( cubeGeometry );
                             const cubeWire = new THREE.LineSegments( cubeGeo, this.lineMat);
@@ -86,7 +86,6 @@ class Cubes{
         for(var i=0; i<this.colors.length; i++) {
             this.colors[i].percentage = parseInt((this.colors[i].percentage/empresas.length) * 10);
         }
-        console.log(this.colors)
     }
 
 }export default Cubes

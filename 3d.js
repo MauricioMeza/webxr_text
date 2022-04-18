@@ -24,8 +24,18 @@ window.addEventListener('resize', (e) => {
 const controls = new OrbitControls(camera, renderer.domElement);
 camera.position.set(0, 200, 200);
 
+//Animation Loop
+renderer.setAnimationLoop(() => {
+	controls.update();
+	renderer.render(scene, camera)	
+})
+
+
+/*---------------------
+//Raycasting Selection
+----------------------*/
 const ray = new THREE.Raycaster();
-const rect = canvas.getBoundingClientRect();
+//previosly selected objects
 var objSelected = null;
 var selectMat = new THREE.MeshBasicMaterial({color:0x00FF00})
 document.addEventListener('mousemove', (e) =>{
@@ -35,7 +45,7 @@ document.addEventListener('mousemove', (e) =>{
 	if(mouse3D.x <= 1 && mouse3D.y <=1){
 		ray.setFromCamera(mouse3D, camera);
 		var intersect = ray.intersectObjects(cubes.cubes.children);
-		if(intersect.length > 0 && intersect[0].object.name=="cubitodubidu"){
+		if(intersect.length > 0 && intersect[0].object.name=="cubito"){
 			if(objSelected !== null){
 				if(intersect[0].object !== objSelected){
 					objSelected.material = objSelected.userData.orglMat;	
@@ -47,7 +57,7 @@ document.addEventListener('mousemove', (e) =>{
 									Variedad:${objSelected.userData.v}, 
 									Canal:${objSelected.userData.c}
 									<br>
-									Empresas:${objSelected.userData.empresas}`
+									${objSelected.userData.empresas}`
 		}else if((intersect.length == 0 && objSelected != null)){
 			objSelected.material = objSelected.userData.orglMat;
 			objSelected = null;
@@ -56,11 +66,6 @@ document.addEventListener('mousemove', (e) =>{
 	}
 })
 
-//Animation Loop
-renderer.setAnimationLoop(() => {
-	controls.update();
-	renderer.render(scene, camera)	
-})
 
 /*---------------------
 //Scene World Definition
@@ -107,7 +112,6 @@ var cubes = new Cubes(vecs);
 var empresas = []
 
 
-
 //------------------------------------
 //UI Prototipo, Slices, InputLists y +,- Buttons
 //------------------------------------
@@ -148,25 +152,27 @@ makeSum(vecs.ncsd, ncsd_sum);
 makeSum(vecs.canl, canl_sum);
 makeSum(vecs.vard, vard_sum);
 
+//Generate random number of empresas
 function randomEmpresas(){
 	if(empresas.length == 0){
 		for(var i=0; i<empresas_num.value; i++){
 			empresas.push(new Empresa(i));
 		}	
 	}else{
-		var num = empresas_num.value - empresas.length;
-		console.log(num)
-		if(num < 0){
-			for(num; num<0; num++){
-				empresas.pop()
-			}		
-		}else if(num > 0){
-			for(num; num>0; num--){
-				empresas.push(new Empresa());
-			}		
+		if(empresas_num.value > 0 && empresas_num.value <=20){
+			var num = empresas_num.value - empresas.length;
+			if(num < 0){
+				for(num; num<0; num++){
+					empresas.pop()
+				}		
+			}else if(num > 0){
+				for(num; num>0; num--){
+					empresas.push(new Empresa(empresas.length));
+				}		
+			}
 		}
+		
 	}
-	console.log(empresas)
 	addEmpresasUI();	
 }
 //For every Necesidad, Canal, Variedad create an input field
@@ -287,9 +293,10 @@ opacity_slider.addEventListener('input', (e) => {
 	}
 })
 function changeList(vec, vec_list, vec_slc, vec_sum, char, add){
-	if(add){
+
+	if(add && vec.length < 20){
 		vec.push(0);
-	}else{
+	}else if (!add && vec.length > 1){
 		vec.pop();
 	}
 	addList(vec, vec_list, vec_slc, char); 
