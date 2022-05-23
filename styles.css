@@ -1,124 +1,269 @@
-*
-{
-    padding: 0;
+html, body{
     margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'Advent Pro';
 }
-
-body,
-html
-{
+#model, #webgl{
     width: 100%;
     height: 100%;
-    font-family: Arial, Helvetica, sans-serif;
-}
-
-/*----3D Model and Settings----*/
-.webgl
-{
-    width: 100%;
-    height: 88vh;
-    background: #000000;
+    position: fixed;
+    overflow: hidden;
     z-index: 2;
+    font-family: 'Advent Pro';
 }
-.slices{
-    text-align: center;
+#help{
     width: 100%;
-    z-index: 5;
-    position: absolute;
+    height: 100%;
+    font-family: 'Advent Pro';
 }
-#top-slices{
-    margin: auto;
-    top: 0;
-}
-#right-slices{
-    margin: auto;
-    top: 5vh;
-}
-#left-slices{
-    margin: auto;
-    top: 10vh;
-}
-#color{
-    margin: auto;
-    bottom: 15vh;
-    text-align: center;
+#loading-screen{
     width: 100%;
-    z-index: 5;
-    position: absolute;
-}
-#info{
-    background-color: #999999;
-    padding: 4px 8px;
-}
-#settings-3d{
-    height: 10vh;
-    position: relative;
-    float: bottom;
-    bottom: 0;
-    z-index: 5;
-}
-#opacity-slider{
-    width: 70%;
-    margin-left: 5%;  
-}
-#render-btn{
-    width: 100%;
-    margin: 2px;
-}
-
-
-/*----Params, Vectors and Empresas----*/
-.params{
-    text-align: center;
-    overflow-y: scroll;
-    max-height: 100vh;
-}
-.tbl{
-    border: solid;
-    border-width: 0 2px 0 0;
-}
-.V-inner-inpt, .C-inner-inpt, .N-inner-inpt{
-    width: 100%;
-}
-#sum-n, #sum-v, #sum-c{
-    text-align: center;
-    font-weight: bold;
-}
-#updt-btn{
-    width: 90%;
-    margin: 10px 0 10px 0;
-}
-#empresas-num-label{
-    display: inline-block;
-    width: 50%;
-    text-align: right;
-}
-#empresas-num{
-    display: inline-block;
-    width: 20%;
-}
-.empresa-check{
-    width: 10%;
-    display: inline-block;
-}
-.empresa-label{
+    height: 100vh;
     margin: 0;
-    padding: 0;
-    font-size: 80%;
+    background-image: url("./assets/UI/load-background.jpg");
+    background-size: 60vh;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: table;
+    text-align: center;
+    font-family: 'Advent Pro'
 }
-.empresa-title{
-    display: flex;
-    align-items:center;
-    justify-content:center;
+#loading-anim{
+    position: relative;
+    top: 65vh;
 }
-.empresa-container{
-    border-top: solid 1px;
-    border-bottom: solid 1px;
-    -moz-border-bottom-colors: solid 1px;
-    padding: 0;
-    margin: 15px 0 0 0;
-}
-.empresa-checks-row{
+
+/*----------------*/
+/*-----Top UI-----*/
+/*----------------*/
+.ui-top{
+    position: fixed;
+    background-color: #006BB7;
+    top: 0;
+    z-index: 3;
     width: 100%;
-    margin: auto;
+    height: 50px;
+    border-radius: 0 0 10px 10px;
+    text-align: center;
+}
+#btn-back{
+    position: fixed;
+    left: 0;
+    top: 0;
+    margin: 6px;
+}
+#model-title{
+    margin: 6px;
+    display: inline-block;
+    user-select: none;  
+}
+h3{
+    display: inline;
+    font-weight: 700 !important;
+    color: white !important;
+}
+.ui-logo{
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 3;
+}
+.poen-logo{
+    width: 35%;
+    user-select: none;
+}
+@media (max-width: 600px) {
+    .poen-logo{
+        display: none;
+    }
+}
+
+/*----------------*/
+/*---Side UI---*/
+/*----------------*/
+#side-btns{
+    position: fixed;
+    right: 0;
+    top: 50vh;
+    z-index: 3;
+}
+#offcanvasRight{
+    z-index: 5;
+    font-family: 'Advent Pro';
+    color: #235498;
+}
+.offcanvas-title{
+    display: inline;
+    font-weight: 700 !important;
+    color: #235498;
+}
+h5{
+    display: inline;    
+}
+.visible-eye{
+    float: right;
+}
+
+
+/*----------------*/
+/*---Bottom UI---*/
+/*----------------*/
+.ui-bottom{
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+}
+#partes-title{
+    font-size: 20px;
+    background-color:#006BB7;
+    color: white;
+    border-radius: 15px;
+    padding: 10px 25px;
+    display: table;
+    margin: 0 auto;
+    box-shadow:0px 2px 5px #5a5a5a;
+}
+#partes-dsc{
+    font-size: 16px;
+    background-color: white;
+    color: black;
+    padding: 0px;
+    border-radius: 15px;
+    box-shadow:0px 2px 5px #5a5a5a;
+    max-height: 20vh;
+    display: inline-block;
+    overflow-y: scroll;
+}
+.center-btns{
+    max-width: 60vw;
+    text-align: center;
+    margin-bottom: 10px;
+}
+.btn-group{
+    max-width: 60vw;
+    text-align: center;
+    margin-bottom: 10px;
+    box-shadow:0px 2px 5px #5a5a5a;
+}
+.center-btn-grp{
+    margin-left: 5px;
+    margin-right: 5px;
+}
+@media (max-width: 600px) {
+    #navigation{
+        display: none;
+    }
+}
+.btn-primary{
+    background-color: #006BB7 !important;
+    border: none !important;
+}
+.btn-primary:hover{
+    background-color: #005592 !important;
+
+}
+.img-btn{
+    height: 18px;
+}
+.white-btn:hover{
+    background-color: rgb(230, 230, 230) !important;
+}
+
+/*---Changing ScrollBar---*/
+::-webkit-scrollbar {
+    display: block;
+    width: 5px;
+}
+/* Track */
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey; 
+    border-radius: 50px;
+    height: 20px; 
+}
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #006BB7; 
+    border-radius: 50px;
+}
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #005694; 
+}
+
+/*-------------*/
+/*---Help UI---*/
+/*-------------*/
+#help-info{
+    margin-top: 50px;
+}
+.help-title{
+    color: #005592;
+    margin-top: 40vh !important;
+    padding-left: 10vw !important;
+}
+.help-h4{
+    font-size:xx-large;
+    font-weight: bolder;
+}
+.help-p{
+    font-size:large;
+    font-weight: bolder;
+}
+/*Bottom controls and logo*/
+#controls{
+    position: fixed;
+    bottom: 20px;
+    right: 0px;
+    width: 20%;
+    text-align: center;
+}
+.carousel-btns{
+    border: none;
+    background: none;
+    opacity: 1;
+}
+.carousel-btns:hover, .carousel-btns:focus{
+    opacity: 0.7;
+}
+.megalabs-logo{
+    width: 35%;
+}
+
+/*Right Info*/
+#eye-div{
+    position: relative;
+    height: 90vh;
+}
+.help-h5{
+    display: block;
+    font-weight: bolder;
+}
+@media (max-width: 769px) {
+    #eye-div{
+        height: 70vh;
+    }
+    .help-title{
+        margin-top: 5vh !important;
+    }
+    #help-info{
+        text-align: center;
+    }
+    .megalabs-logo{
+        width: 50%;
+    }
+}
+#eye-pic{
+    width: 80%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.helps{
+    max-width: 100%;
+    text-align: center;
+    color: #005592;
 }
