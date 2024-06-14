@@ -1,115 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./styles.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-    <link href='https://fonts.googleapis.com/css?family=Advent Pro' rel='stylesheet'>
-    <title>Poen Visualizador</title>
+    <title>Three.js Test</title>
+
+    <!-- CSS only -->
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./assets/lib/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./assets/css/index.css">
+    <script src="./dist/bundle.js" defer></script>
 </head>
+
 <body>
-    <div id="loading-screen">
-        <span id="loading-anim">
-            <p id="loading-num">0%</p>
-            <p>Cargando...</p>
-        </span>
-    </div>
-    <div id="model">
-        <!------------------------------------------>
-        <!--- UI TOP - Back button and top title --->
-        <!------------------------------------------>
-        <div class="ui-top">
-            <span>
-                <button class="btn btn-primary" id="btn-back">
-                    <img class="img-btn" src="./assets/UI/back.png">Volver
-                </button>
-            </span>
-            <span id="model-title">
-                <img class="img-btn" src="./assets/UI/dots.png">
-                <h3>Ojo Sano</h3>
-            </span>
-        </div>
-        
-        <!-------------------->
-        <!--- WebGL Canvas --->
-        <!-------------------->
-        <canvas id="webgl"></canvas>
-        
-        <!----------------->
-        <!--- Poen Logo --->
-        <!----------------->
-        <div class="ui-logo">
-            <img class="poen-logo" src="./assets/UI/poenLogo.png">
-        </div>
-
-        <!-------------------------------------->
-        <!--- UI BOTTOM - Navigation buttons --->
-        <!-------------------------------------->
-        <div class="ui-bottom">
-            <span class="center-btns" id="partes-title">
-                Acerca el Mouse al Ojo
-            </span>
-            <div class="center-btns" id="partes-dsc">
-            </div>
-            <div class="center-btns">
-                <span class="btn-group center-btn-grp">
-                    <button id="open-btn" class="btn btn-light white-btn">
-                        <img class="img-btn" src="./assets/UI/play.png">Abrir
-                    </button>   
-                    <button id="int-btn" class="btn btn-light white-btn">
-                        <img class="img-btn" src="./assets/UI/internal.png">Interno
-                    </button>
-                    <button id="ext-btn" class="btn btn-light white-btn">
-                        <img class="img-btn" src="./assets/UI/external.png">Externo
-                    </button>    
-                </span>
-                <span class="btn-group center-btn-grp" id="navigation">
-                    <button id="orbt-btn" class="btn btn-light white-btn">
-                        <img class="img-btn" src="./assets/UI/rotate-icon.png">
-                    </button>
-                    <button id="span-btn" class="btn btn-light white-btn">
-                        <img class="img-btn" src="./assets/UI/move-icon.png">
-                    </button>
-                    <button id="zoom-btn" class="btn btn-light white-btn">
-                        <img class="img-btn" src="./assets/UI/zoom-icon.png">
-                    </button>
-                </span>
-                <span class="btn-group center-btn-grp">
-                    <button id="help-btn" class="btn btn-primary" href="./help.html">
-                        Necesito Ayuda
-                    </button>
-                </span>
-            </div>
-        </div>
-    </div>
-
-    <!--------------------------------------->
-    <!--- SIDE MENU - Offcanvas with comps--->
-    <!--------------------------------------->
-    <span id="side-btns">
-        <a class="btn btn-primary" data-bs-toggle="offcanvas" href="#offcanvasRight" >
-            <img src="./assets/UI/menu-comps.png">
-        </a>
+    <span id="scroller">
     </span>
-
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" data-bs-backdrop="false" aria-labelledby="offcanvasRightLabel">
-        <div class="offcanvas-header">
-            <h4 class="offcanvas-title" id="offcanvasExampleLabel">Componentes</h4>
-            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-
-        <div class="offcanvas-body">
-            <div id="components-ui">
-                <div>
-                </div>
+    <div id="header">
+        <img id="head-logo" src="./assets/logo_3.png">
+        <button class="btn" id="nav-btn"></button>
+        <div id="head-menu">
+            <div class="head-menu-cont">
+                <img id="menu-1" class="head-menu-btn"  src="./assets/menu-icon.png">
+            </div>
+            <div class="head-menu-cont">
+                <img id="menu-2" class="head-menu-btn"  src="./assets/ceo-icon.png">
+            </div>
+            <a href="https://veryrealhelp.com">
+            <div class="head-menu-cont">
+                <img id="menu-3" class="head-menu-btn"  src="./assets/objeto-icon.png">
+            </div></a>
+            <div class="head-menu-cont">
+                <img id="menu-4" class="head-menu-btn"  src="./assets/panas-icon.png">
             </div>
         </div>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
-    <script src="./dist/bundle.js"></script>   
-    
+    <div id="modal">
+        <button class="btn" id="close-btn"></button>
+        <div id="modal-content" class="container">           
+        </div>       
+    </div>
+    <span>
+        <img id="hud-ovrly" src="./assets/overlay.png">
+    </span>
+    <span id="nav-buttons">
+        <button class="num-btn" nump="0"></button></br>
+        <button class="num-btn" nump="0.2"></button></br>
+        <button class="num-btn" nump="0.4"></button></br>
+        <button class="num-btn" nump="0.6"></button></br>
+        <button class="num-btn" nump="0.8"></button>
+    </span>
+    <div id="change-move">
+        <button class="btn" id="ctrl-btn"></button></br>
+        <span>Movimiento Libre</span>
+    </div>
+    <div id="titl-box">
+        <h2>Metaverse University</h2>
+    </div>
+    <div id="desc-box">
+        <h3>Titulo</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+            magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+            commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+            nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
+            anim id est laborum.</p>
+    </div>
+    <canvas class="webgl"></canvas>
 </body>
+
 </html>
