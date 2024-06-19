@@ -3,7 +3,12 @@ import {FirstPersonControls} from 'three/examples/jsm/controls/FirstPersonContro
 import {VRButton} from 'three/examples/jsm/webxr/VRButton'
 import World from './world';
 import Camera from './camera';
-//import './hamburger'
+
+/*********************
+* UI-HTML References *
+**********************/
+const loadButton = document.getElementById("LoadButton");
+
 
 /****************************
 * Base Settings Boilerplate *
@@ -35,6 +40,7 @@ document.body.appendChild(vrButton);
 //Events-Actions
 canvas.addEventListener('mousemove', (e) => {camera.updateMouse(e)});
 window.addEventListener('resize', (e) => {camera.resize(renderer)})
+loadButton.addEventListener('change', (e) => {world.loadFile(e.target.files[0])});
 
 
 /**********************
