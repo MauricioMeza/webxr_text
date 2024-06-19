@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import { FBXLoader } from 'three/examples/jsm/Addons.js';
 
 
 export default class World{
@@ -7,6 +8,7 @@ export default class World{
         this.loadHDRI(scene, renderer);
         this.createFloor(scene);
         this.lighting(scene);
+        this.scene = scene;
     }
 
     //Load HDRI image background
@@ -51,6 +53,27 @@ export default class World{
         planeMesh.rotation.x = Math.PI / 2;
         planeMesh.position.y = -5;
         scene.add(planeMesh) 
+    }
+
+    async loadFile(file){
+        const model = await this.loadModel(file);
+        model.scale.set(0.1,0.1,0.1)
+        console.log(model);
+        this.scene.add(model);
+    }
+
+    async loadModel(file){
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const contents = e.target.result;
+                const arrayBuffer = new Uint8Array(contents).buffer;
+                const loader = new FBXLoader();
+                const model = loader.parse(arrayBuffer, '');
+                resolve(model);
+            }
+            reader.readAsArrayBuffer(file);
+        });
     }
 
     
