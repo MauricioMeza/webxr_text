@@ -12,17 +12,6 @@ import { getStorage} from "firebase/storage";
 * Firebase Configuracion *
 **************************/
 
-const firebaseConfig = {
-  apiKey: process.env.APP_API_KEY,
-  authDomain: process.env.APP_AUTH_DOMAIN,
-  projectId: process.env.APP_PROJECT_ID,
-  storageBucket: process.env.APP_STORAGE_BUCKET,
-  messagingSenderId: process.env.APP_MESSAGING_SENDER_ID,
-  appId: process.env.APP_APP_ID
-};
-
-const app = initializeApp(firebaseConfig);
-const storage = getStorage(app);
 
 
 /*********************
@@ -46,7 +35,6 @@ renderer.setPixelRatio(window.devicePixelRatio)
 * World and Player *
 ********************/
 var world = new World(scene, renderer);
-world.downloadModel(storage)
 
 //FPS-Controls
 var controls = new FirstPersonControls(camera.cam, canvas);
