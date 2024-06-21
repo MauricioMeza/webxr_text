@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import {FirstPersonControls} from 'three/examples/jsm/controls/FirstPersonControls'
+import { XRControllerModelFactory } from 'three/examples/jsm/webxr/XRControllerModelFactory';
 import {VRButton} from 'three/examples/jsm/webxr/VRButton'
 import World from './world';
 import Camera from './camera';
@@ -38,6 +39,7 @@ const canvas = document.querySelector('canvas.webgl')
 const scene = new THREE.Scene()
 const camera = new Camera(scene);
 const renderer = new THREE.WebGLRenderer({canvas: canvas, antialias: true})
+const clock = new THREE.Clock();
 renderer.setSize(camera.size.w, camera.size.h)
 renderer.setPixelRatio(window.devicePixelRatio)
 
@@ -55,22 +57,42 @@ controls.movementSpeed = 20;
 
 //VR-Controls
 renderer.xr.enabled = true;
-var vrButton = VRButton.createButton(renderer)
+const vrButton = VRButton.createButton(renderer)
 vrButton.style.position = 'fixed';
 document.body.appendChild(vrButton);
+const controllerModelFactory = new XRControllerModelFactory();
+const geometry = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, 0, 0),  new THREE.Vector3(0, 0, -1)]);
+const line = new THREE.Line(geometry);
+line.scale.z = 10;
+const controllers = [];
+for (let i = 0; i < 2; i++) {
+  const controller = renderer.xr.getController(i);
+  controller.add(line.clone());
+  controller.addEventListener('selectstart', (e) => {e.target.userData.selecting = true});
+  controller.addEventListener('selectend', (e) => {e.target.userData.selecting = false});
+  controller.userData = {selecting : false};
+  controllers.push(controller);
+  const grip = renderer.xr.getControllerGrip(i);
+  grip.add(controllerModelFactory.createControllerModel(grip));
+  camera.dolly.add(controller);
+  camera.dolly.add(grip);
+}
 
 //Events-Actions
 canvas.addEventListener('mousemove', (e) => {camera.updateMouse(e)});
 window.addEventListener('resize', (e) => {camera.resize(renderer)})
 loadButton.addEventListener('change', (e) => {world.loadFile(e.target.files[0], storage)});
-
+vrButton.addEventListener('click', (e) => {controls.enabled = false})
 
 /**********************
  * Animate Render Loop
  **********************/
-var clock = new THREE.Clock();
+
 renderer.setAnimationLoop(() => {
-  camera.checkRay(scene)
+  camera.checkRay(scene);
+  if(!controls.enabled){
+    camera.moveDolly(clock.getDelta(), controllers);
+  }
   world.animate();
   renderer.render(scene, camera.cam)
   controls.update(clock.getDelta());
