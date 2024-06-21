@@ -10,7 +10,12 @@ export default class Camera{
 
         this.cam = new THREE.PerspectiveCamera(55, this.size.w / this.size.h, 0.001, 200);
         this.cam.position.set(0, 10, 0);
-        scene.add(this.cam);
+        this.dolly = new THREE.Object3D();
+        this.dolly.position.set(0,0,0);
+        this.dolly.add(this.cam);
+        this.dummyCam = new THREE.Object3D();
+        this.cam.add(this.dummyCam);
+        scene.add(this.dolly);
     }
 
     //Function for responsive Canvas
@@ -71,4 +76,19 @@ export default class Camera{
 
     }
 
+    /*************
+    * VR Movement *
+    **************/
+
+    moveDolly(deltaTime, controllers){
+        if(controllers[0].userData.selecting || controllers[1].userData.selecting){
+            const speed = -5;
+            const lookQuaternion = this.dolly.quaternion.clone();
+            const worldQuaternion = new THREE.Quaternion();
+            this.dolly.quaternion.copy(this.dummyCam.getWorldQuaternion(worldQuaternion));
+            this.dolly.translateZ(speed * deltaTime);
+            this.dolly.position.y = 0;
+            this.dolly.quaternion.copy(lookQuaternion); 
+        }  
+    }
 }
