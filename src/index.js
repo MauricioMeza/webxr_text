@@ -12,7 +12,7 @@ import { getStorage} from "firebase/storage";
 /*************************
 * Firebase Configuracion *
 **************************/
-
+/*
 const firebaseConfig = {
   apiKey: process.env.APP_API_KEY,
   authDomain: process.env.APP_AUTH_DOMAIN,
@@ -21,15 +21,14 @@ const firebaseConfig = {
   messagingSenderId: process.env.APP_MESSAGING_SENDER_ID,
   appId: process.env.APP_APP_ID
 };
-
 const app = initializeApp(firebaseConfig);
 const storage = getStorage(app);
-
+*/
 
 /*********************
 * UI-HTML References *
 **********************/
-const loadButton = document.getElementById("LoadButton");
+//const loadButton = document.getElementById("LoadButton");
 
 
 /****************************
@@ -48,7 +47,7 @@ renderer.setPixelRatio(window.devicePixelRatio)
 * World and Player *
 ********************/
 var world = new World(scene, renderer);
-world.downloadModel(storage)
+//world.downloadModel(storage)
 
 //FPS-Controls
 var controls = new FirstPersonControls(camera.cam, canvas);
@@ -68,9 +67,12 @@ const controllers = [];
 for (let i = 0; i < 2; i++) {
   const controller = renderer.xr.getController(i);
   controller.add(line.clone());
+  controller.addEventListener('connected', (e) => {e.target.userData.gamepad = e.data.gamepad});
   controller.addEventListener('selectstart', (e) => {e.target.userData.selecting = true});
   controller.addEventListener('selectend', (e) => {e.target.userData.selecting = false});
-  controller.userData = {selecting : false};
+  controller.userData.selecting = false;
+  controller.userData.gamepad = null;
+  console.log(controller);
   controllers.push(controller);
   const grip = renderer.xr.getControllerGrip(i);
   grip.add(controllerModelFactory.createControllerModel(grip));
@@ -81,8 +83,8 @@ for (let i = 0; i < 2; i++) {
 //Events-Actions
 canvas.addEventListener('mousemove', (e) => {camera.updateMouse(e)});
 window.addEventListener('resize', (e) => {camera.resize(renderer)})
-loadButton.addEventListener('change', (e) => {world.loadFile(e.target.files[0], storage)});
-vrButton.addEventListener('click', (e) => {controls.enabled = false})
+vrButton.addEventListener('click', (e) => {controls.enabled = false; console.log(controllers);})
+//loadButton.addEventListener('change', (e) => {world.loadFile(e.target.files[0], storage)});
 
 /**********************
  * Animate Render Loop
@@ -93,8 +95,8 @@ renderer.setAnimationLoop(() => {
   if(!controls.enabled){
     camera.moveDolly(clock.getDelta(), controllers);
   }
+  camera.cam.position.setY(camera.initHeight);
   world.animate();
   renderer.render(scene, camera.cam)
   controls.update(clock.getDelta());
-  camera.cam.position.setY(10);
 })

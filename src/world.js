@@ -33,7 +33,7 @@ export default class World{
 
     //--Load lights
     lighting(scene){
-        const light = new THREE.AmbientLight( 0x404040 );
+        const light = new THREE.AmbientLight( 0x909090 );
         scene.add( light );
     }
 
@@ -61,7 +61,7 @@ export default class World{
 
         //position bottom plane
         planeMesh.rotation.x = Math.PI / 2;
-        planeMesh.position.y = -5;
+        planeMesh.position.y = 0;
         scene.add(planeMesh) 
     }
 

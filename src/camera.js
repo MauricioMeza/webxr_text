@@ -7,9 +7,10 @@ export default class Camera{
         this.mouseNormal = new THREE.Vector2(this.size.w, this.size.h); //mouse position
         this.ray = new THREE.Raycaster();                               //raycaster
         this.intersect = null;                                          //last intersected obj     
+        this.initHeight = 5;
 
         this.cam = new THREE.PerspectiveCamera(55, this.size.w / this.size.h, 0.001, 200);
-        this.cam.position.set(0, 10, 0);
+        this.cam.position.set(0, this.initHeight, 0);
         this.dolly = new THREE.Object3D();
         this.dolly.position.set(0,0,0);
         this.dolly.add(this.cam);
@@ -81,6 +82,7 @@ export default class Camera{
     **************/
 
     moveDolly(deltaTime, controllers){
+        /*
         if(controllers[0].userData.selecting || controllers[1].userData.selecting){
             const speed = -5;
             const lookQuaternion = this.dolly.quaternion.clone();
@@ -89,6 +91,16 @@ export default class Camera{
             this.dolly.translateZ(speed * deltaTime);
             this.dolly.position.y = 0;
             this.dolly.quaternion.copy(lookQuaternion); 
-        }  
+        }*/
+        var joystick0 = controllers[0].userData.gamepad;
+        if(joystick0.axes[0] + joystick0.axes[1] > 0){
+            const speed = 5;
+            const lookQuaternion = this.dolly.quaternion.clone();
+            const worldQuaternion = new THREE.Quaternion();
+            this.dolly.quaternion.copy(this.dummyCam.getWorldQuaternion(worldQuaternion));
+            this.dolly.translateOnAxis(new THREE.Vector3(joystick0.axis[0], 0, joystick0.axis[1]), speed*deltaTime)
+            this.dolly.position.y = 0;
+            this.dolly.quaternion.copy(lookQuaternion); 
+        }
     }
 }
