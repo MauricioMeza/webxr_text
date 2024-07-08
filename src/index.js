@@ -67,7 +67,7 @@ const controllers = [];
 for (let i = 0; i < 2; i++) {
   const controller = renderer.xr.getController(i);
   controller.add(line.clone());
-  //controller.addEventListener('connected', (e) => {e.target.userData.gamepad = e.data.gamepad});
+  controller.addEventListener('connected', (e) => {e.target.userData.gamepad = e.data.gamepad});
   controller.addEventListener('selectstart', (e) => {e.target.userData.selecting = true});
   controller.addEventListener('selectend', (e) => {e.target.userData.selecting = false});
   controller.userData.selecting = false;
