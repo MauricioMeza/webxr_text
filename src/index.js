@@ -92,7 +92,7 @@ vrButton.addEventListener('click', (e) => {controls.enabled = false; console.log
 renderer.setAnimationLoop(() => {
   camera.checkRay(scene);
   if(!controls.enabled){
-    //camera.moveDolly(clock.getDelta(), controllers);
+    camera.moveDolly(clock.getDelta(), controllers);
   }
   camera.cam.position.setY(camera.initHeight);
   world.animate();
