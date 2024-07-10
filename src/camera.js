@@ -93,6 +93,7 @@ export default class Camera{
             this.dolly.quaternion.copy(lookQuaternion); 
         }*/
         var joystick0 = controllers[0].userData.gamepad;
+        /*
         if(joystick0.axes[0] + joystick0.axes[1] > 0){
             const speed = 5;
             const lookQuaternion = this.dolly.quaternion.clone();
@@ -103,5 +104,6 @@ export default class Camera{
             this.dolly.position.y = 0;
             this.dolly.quaternion.copy(lookQuaternion); 
         }
+        */
     }
 }
