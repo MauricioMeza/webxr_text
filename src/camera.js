@@ -98,7 +98,8 @@ export default class Camera{
             const lookQuaternion = this.dolly.quaternion.clone();
             const worldQuaternion = new THREE.Quaternion();
             this.dolly.quaternion.copy(this.dummyCam.getWorldQuaternion(worldQuaternion));
-            this.dolly.translateOnAxis(new THREE.Vector3(joystick0.axis[0], 0, joystick0.axis[1]), speed*deltaTime)
+            this.dolly.translateZ(-joystick0.axes[1] * speed * deltaTime);
+            this.dolly.translateX( joystick0.axes[0] * speed * deltaTime);
             this.dolly.position.y = 0;
             this.dolly.quaternion.copy(lookQuaternion); 
         }
